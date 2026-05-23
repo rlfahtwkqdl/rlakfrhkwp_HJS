@@ -3378,6 +3378,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &872547845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 872547847}
+  - component: {fileID: 872547848}
+  m_Layer: 0
+  m_Name: SceneCursorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &872547847
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872547845}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.17862, y: 0.30617, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &872547848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872547845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4edd41fc17db1a843a5de3c98739640b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CrosshairCursorManager
+  crosshairTexture: {fileID: 2800000, guid: 97a463e12ea7c51458aaeb13d7dfca3d, type: 3}
 --- !u!1 &1069513484
 GameObject:
   m_ObjectHideFlags: 0
@@ -3394,7 +3439,7 @@ GameObject:
   - component: {fileID: 1069513490}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3411,7 +3456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eba9b8d458d44549978b2b2c1de1cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  moveSpeed: 5
+  moveSpeed: 1
   spriteUp:
   - {fileID: -8982521830522050855, guid: 35459fe5fa09e4f4eabdf01f0239c4c4, type: 3}
   spriteDown:
@@ -3652,3 +3697,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 1114043847}
   - {fileID: 1069513489}
+  - {fileID: 872547847}
