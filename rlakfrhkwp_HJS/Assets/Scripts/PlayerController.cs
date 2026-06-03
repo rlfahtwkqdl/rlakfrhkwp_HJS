@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public Sprite[] spriteLeft;
     public Sprite[] spriteRight;
     public float frameTime = 0.15f;
+    
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;

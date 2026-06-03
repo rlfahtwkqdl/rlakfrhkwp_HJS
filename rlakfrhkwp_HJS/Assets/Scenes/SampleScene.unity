@@ -3436,7 +3436,8 @@ GameObject:
   - component: {fileID: 1069513487}
   - component: {fileID: 1069513486}
   - component: {fileID: 1069513485}
-  - component: {fileID: 1069513490}
+  - component: {fileID: 1069513491}
+  - component: {fileID: 1069513492}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3597,8 +3598,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1069513490
-BoxCollider2D:
+--- !u!114 &1069513491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069513484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea8bfedff28255a46bcc5699d0575fe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCollision
+--- !u!58 &1069513492
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3632,17 +3645,7 @@ BoxCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.14}
-    newSize: {x: 4.54, y: 4.77}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.16, y: 0.14}
-  m_EdgeRadius: 0
+  m_Radius: 0.06
 --- !u!1 &1103676972
 GameObject:
   m_ObjectHideFlags: 0
@@ -3788,6 +3791,10 @@ PrefabInstance:
     - target: {fileID: 3777284608353971171, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
       propertyPath: m_Name
       value: Enemy_ty1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8740999287592133498, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

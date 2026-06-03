@@ -36,6 +36,11 @@ public class ClickDamageTest : MonoBehaviour
             {
                 Debug.Log("<color=red>오인사격</color>");
             }
+            else if (hit.collider.CompareTag("Head"))
+            {
+                // 콘솔창에 노란색 굵은 글씨로 표시됩니다.
+                Debug.Log("<color=yellow><b>머리통!");
+            }
             else
             {
                 Debug.Log($"{hit.collider.name} 타격! 데미지를 입혔습니다.");
