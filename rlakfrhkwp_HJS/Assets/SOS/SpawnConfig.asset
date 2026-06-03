@@ -12,8 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c618068d97b451a429e9210bf73a0105, type: 3}
   m_Name: SpawnConfig
   m_EditorClassIdentifier: Assembly-CSharp::SpawnConfig
-  baseSpawnInterval: 2
-  difficultyScale: 0.05
-  minSpawnInterval: 0.2
-  spawnRadius: 15
-  enemyPool: []
+  minSpawnRadius: 2
+  maxSpawnRadius: 3
+  phases:
+  - phaseName: 1
+    duration: 10
+    spawnInterval: 2
+    enemyPool:
+    - enemyPrefab: {fileID: 3777284608353971171, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
+      weight: 1
+  - phaseName: 2
+    duration: 99
+    spawnInterval: 0.5
+    enemyPool:
+    - enemyPrefab: {fileID: 3777284608353971171, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
+      weight: 1

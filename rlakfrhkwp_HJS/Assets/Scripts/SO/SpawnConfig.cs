@@ -1,26 +1,31 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-// 페이즈 하나당 들어갈 기획 데이터 구조 구조체
+// 적 프리팹과 등장 확률(가중치)을 묶는 구조체
+[System.Serializable]
+public struct EnemyWeightInfo
+{
+    public GameObject enemyPrefab;
+    [Tooltip("출현 가중치 (이 값이 높을수록 더 자주 스폰됩니다. 비율을 100 기준으로 맞추면 편합니다.)")]
+    public int weight;
+}
+
 [System.Serializable]
 public struct PhaseInfo
 {
-    public string phaseName;       // 에디터 확인용 페이즈 이름 (예: "1페이즈 - 물량공세")
-    public float duration;         // 이 페이즈가 유지될 시간 (초)
-    public float spawnInterval;    // 이 페이즈에서의 적 생성 주기 (초)
-    public List<GameObject> enemyPrefabs; // 이 페이즈에서 등장할 적 종류들
+    public string phaseName;       // 페이즈 이름
+    public float duration;         // 페이즈 유지 시간
+    public float spawnInterval;    // 적 생성 주기
+    public List<EnemyWeightInfo> enemyPool; // ★ GameObject 리스트에서 가중치 구조체 리스트로 변경!
 }
 
 [CreateAssetMenu(fileName = "NewPhaseSpawnConfig", menuName = "ScriptableObjects/PhaseSpawnConfig")]
 public class SpawnConfig : ScriptableObject
 {
     [Header("스폰 거리 범위 설정")]
-    [Tooltip("플레이어로부터의 최소 스폰 거리 (화면 안쪽 가리기용)")]
     public float minSpawnRadius = 12f;
-    [Tooltip("플레이어로부터의 최대 스폰 거리")]
     public float maxSpawnRadius = 18f;
 
     [Header("페이즈 리스트")]
-    [Tooltip("순서대로 페이즈가 진행됩니다.")]
     public List<PhaseInfo> phases;
 }
