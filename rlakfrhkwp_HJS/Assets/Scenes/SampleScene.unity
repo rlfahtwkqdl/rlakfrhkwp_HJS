@@ -3823,7 +3823,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 1
+  orthographic size: 1.15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4017,7 +4017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eba9b8d458d44549978b2b2c1de1cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  moveSpeed: 1
+  moveSpeed: 0.7
   spriteUp:
   - {fileID: -8982521830522050855, guid: 35459fe5fa09e4f4eabdf01f0239c4c4, type: 3}
   spriteDown:

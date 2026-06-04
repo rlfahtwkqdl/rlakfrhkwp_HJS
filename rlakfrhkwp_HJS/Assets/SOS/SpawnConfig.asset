@@ -20,7 +20,7 @@ MonoBehaviour:
     spawnInterval: 2
     enemyPool:
     - enemyPrefab: {fileID: 3777284608353971171, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
-      weight: 1
+      weight: 5
   - phaseName: 2
     duration: 99
     spawnInterval: 0.5

@@ -3,29 +3,26 @@
 public class EnemyChaser : MonoBehaviour
 {
     [Header("데이터 연결")]
-    [SerializeField] private EnemyData enemyData; // 위에서 만든 ScriptableObject를 여기에 넣습니다.
+    [SerializeField] private EnemyData enemyData; // 이제 모든 데이터는 여기서 가져옵니다.
 
     private Transform playerTransform;
 
     void Start()
     {
-        // 씬에서 "Player" 태그를 가진 오브젝트를 찾아서 위치(Transform)를 가져옵니다.
         GameObject player = GameObject.FindWithTag("Player");
-
         if (player != null)
         {
             playerTransform = player.transform;
         }
         else
         {
-            Debug.LogError("씬에 'Player' 태그를 가진 오브젝트를 찾을 수 없습니다! 플레이어 오브젝트의 Tag를 확인하세요.");
+            Debug.LogError("씬에 'Player' 태그를 가진 오브젝트를 찾을 수 없습니다!");
         }
     }
 
     void Update()
     {
-        // 플레이어가 존재할 때만 무조건 추적합니다.
-        if (playerTransform != null)
+        if (playerTransform != null && enemyData != null)
         {
             FollowPlayer();
         }
@@ -33,14 +30,65 @@ public class EnemyChaser : MonoBehaviour
 
     void FollowPlayer()
     {
-        // ScriptableObject(EnemyData)에 설정된 속도 값을 가져옵니다.
         float speed = enemyData.MoveSpeed;
+        float force = enemyData.SeparationForce; // SO에서 분산 힘 가져오기
 
-        // 현재 나의 위치에서 플레이어의 위치로 매 프레임 이동합니다 (탑뷰 2D 정석 코드)
-        transform.position = Vector2.MoveTowards(
-            transform.position,
-            playerTransform.position,
-            speed * Time.deltaTime
-        );
+        // 1. 플레이어를 향하는 기본 방향 계산
+        Vector2 directionToPlayer = ((Vector2)playerTransform.position - (Vector2)transform.position).normalized;
+
+        // 2. 주변 적들과 겹치지 않으려는 밀어내는 힘(분산력) 계산
+        Vector2 separation = CalculateSeparation();
+
+        // 3. 두 힘을 합산하여 최종 이동 방향 결정 (SO의 힘 적용)
+        Vector2 finalDirection = (directionToPlayer + separation * force).normalized;
+
+        // 4. 최종 방향으로 이동
+        transform.position += (Vector3)finalDirection * speed * Time.deltaTime;
+    }
+
+    Vector2 CalculateSeparation()
+    {
+        Vector2 separationVector = Vector2.zero;
+
+        // SO에 설정된 반경(SeparationRadius)으로 주변 적 감지
+        Collider2D[] OverlappedColliders = Physics2D.OverlapCircleAll(transform.position, enemyData.SeparationRadius);
+        int neighborCount = 0;
+
+        foreach (var collider in OverlappedColliders)
+        {
+            if (collider.transform.root != transform.root && collider.CompareTag("Enemy"))
+            {
+                Vector2 awayFromNeighbor = (Vector2)transform.position - (Vector2)collider.transform.position;
+                float distance = awayFromNeighbor.magnitude;
+
+                if (distance < 0.01f)
+                {
+                    separationVector += Random.insideUnitCircle.normalized;
+                }
+                else
+                {
+                    separationVector += awayFromNeighbor.normalized / distance;
+                }
+                neighborCount++;
+            }
+        }
+
+        if (neighborCount > 0)
+        {
+            separationVector /= neighborCount;
+        }
+
+        return separationVector;
+    }
+
+    // 에디터 뷰에서 감지 반경을 눈으로 확인하기 위한 기즈모
+    private void OnDrawGizmosSelected()
+    {
+        // 에디터에서 아직 EnemyData를 할당하지 않았을 때 발생하는 에러 방지
+        if (enemyData != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, enemyData.SeparationRadius);
+        }
     }
 }
