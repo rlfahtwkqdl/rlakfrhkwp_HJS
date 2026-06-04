@@ -4251,6 +4251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df838aaa3b057f4088b9357206c03fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickDamageTest
+  gunData: {fileID: 11400000, guid: c75ccb0ed8b80d946897870be24ccff6, type: 2}
 --- !u!1 &1114043845
 GameObject:
   m_ObjectHideFlags: 0

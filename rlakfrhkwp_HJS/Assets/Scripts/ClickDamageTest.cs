@@ -5,13 +5,12 @@ using UnityEngine.InputSystem;
 public class ClickDamageTest : MonoBehaviour
 {
     [Header("데이터 연결")]
-    [SerializeField] private GunData gunData; // ★ 무기 SO를 여기에 연결합니다.
+    [SerializeField] private GunData gunData;
 
     private bool isReloading = false;
 
     void Update()
     {
-        // ★ 장전 중이거나 무기 데이터가 할당되지 않았다면 사격 불가
         if (isReloading || gunData == null) return;
 
         // 마우스 왼쪽 버튼 클릭 감지
@@ -29,8 +28,8 @@ public class ClickDamageTest : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
-        // 한 발 발사했으므로 장전 코루틴 실행
-        StartCoroutine(ReloadRoutine());
+        // ★ [핵심] 이번 사격 후 장전을 할지 말지 결정하는 변수 (기본값은 장전 함)
+        bool shouldReload = true;
 
         // 충돌 결과 처리
         if (hit.collider != null)
@@ -39,10 +38,14 @@ public class ClickDamageTest : MonoBehaviour
             {
                 Debug.Log("<color=red>오인사격</color>");
             }
+            // ★ [경우 2] 적 머리 타격
             else if (hit.collider.CompareTag("Head"))
             {
-                Debug.Log("<color=yellow><b>머리통!</b></color>");
+                Debug.Log("<color=yellow><b>머리통! 장전 시간 초기화 (즉시 재사격 가능)!</b></color>");
                 DestroyEnemy(hit.transform);
+
+                // ★ 헤드샷을 맞췄으므로 장전 과정을 건너뜁니다!
+                shouldReload = false;
             }
             else if (hit.collider.CompareTag("Enemy"))
             {
@@ -58,6 +61,12 @@ public class ClickDamageTest : MonoBehaviour
         {
             Debug.Log("허공을 클릭했습니다 (맞은 오브젝트 없음).");
         }
+
+        // ★ 헤드샷 성공 시(shouldReload가 false가 됨) 코루틴을 실행하지 않아 즉시 또 쏠 수 있습니다.
+        if (shouldReload)
+        {
+            StartCoroutine(ReloadRoutine());
+        }
     }
 
     IEnumerator ReloadRoutine()
@@ -65,7 +74,6 @@ public class ClickDamageTest : MonoBehaviour
         isReloading = true;
         Debug.Log("<color=cyan>[장전 중...]</color>");
 
-        // ★ SO(WeaponData)에 설정된 장전 시간만큼 대기합니다.
         yield return new WaitForSeconds(gunData.ReloadTime);
 
         isReloading = false;
