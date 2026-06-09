@@ -3,7 +3,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [Header("데이터 연결")]
-    [SerializeField] private EnemyData enemyData; // ★ 생성한 EnemyData SO를 여기에 드래그 앤 드롭 하세요.
+    [SerializeField] private EnemyData enemyData;
 
     private int currentHp;
 
@@ -11,13 +11,12 @@ public class Enemy : MonoBehaviour
     {
         if (enemyData != null)
         {
-            // ★ ScriptableObject에 저장된 MaxHp 값을 가져와 초기화합니다.
             currentHp = enemyData.MaxHp;
         }
         else
         {
-            Debug.LogError($"{gameObject.name}에 EnemyData(ScriptableObject)가 연결되지 않았습니다!");
-            currentHp = 3; // 에러 방지용 기본값
+            Debug.LogError($"{gameObject.name}에 EnemyData가 연결되지 않았습니다!");
+            currentHp = 3;
         }
     }
 
@@ -29,7 +28,8 @@ public class Enemy : MonoBehaviour
 
         if (currentHp <= 0)
         {
-            Die();
+            // 몸샷으로 체력이 다 닳아 죽었으므로 이 속성은 headshot = false 입니다.
+            Die(isHeadshot: false);
         }
     }
 
@@ -37,11 +37,19 @@ public class Enemy : MonoBehaviour
     public void InstantKill()
     {
         Debug.Log($"{gameObject.name}이(가) 헤드샷으로 즉사했습니다!");
-        Die();
+        // 헤드샷으로 즉사했으므로 headshot = true 입니다.
+        Die(isHeadshot: true);
     }
 
-    private void Die()
+    // 사망 처리 및 오브젝트 삭제 (점수 전달 기능 추가)
+    private void Die(bool isHeadshot)
     {
+        // ★ ScoreManager가 존재한다면 킬 종류에 따른 점수 지급 요청
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.AddKillScore(isHeadshot);
+        }
+
         Debug.Log($"{gameObject.name} 파괴됨.");
         Destroy(gameObject);
     }
