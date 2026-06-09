@@ -104,6 +104,29 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    // 기존 ScoreManager 클래스 내부에 추가할 내용입니다.
+
+    // ★ 다른 씬(크레딧 씬 등)으로 넘어가도 파괴되지 않고 유지되는 정적 변수
+    public static int FinalCalculatedScore { get; private set; }
+
+    // ★ 게임오버 시점에 딱 한 번 호출해서 최종 점수를 계산하는 함수
+    public void CalculateFinalScore()
+    {
+        if (MoneyManager.Instance == null) return;
+
+        int score = currentScore;
+        int sessionMoney = MoneyManager.Instance.CurrentMoney; // 이번 판에 모은 돈
+
+        // 사용자의 기획 공식 대입 (두 가지 해석 중 의도하신 것을 선택하세요)
+
+        // 해석 A: [점수 - 이번판 돈] -> 돈을 많이 모을수록 최종 점수가 깎임 (돈이 패널티인 경우)
+        // FinalCalculatedScore = score + (sessionMoney * -1);
+
+        // 해석 B: [(점수 + 이번판 돈) * -1] -> 통째로 마이너스 점수로 만들어버림 (완벽한 배드엔딩 컨셉)
+        FinalCalculatedScore = (score + sessionMoney) * -1;
+
+        Debug.Log($"[ScoreManager] 최종 점수 계산 완료: {FinalCalculatedScore}");
+    }
     // 팁: 테스트용으로 게임이 꺼질 때 자동으로 저장되게 하고 싶다면?
     private void OnApplicationQuit()
     {

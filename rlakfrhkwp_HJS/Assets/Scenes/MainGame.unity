@@ -4685,8 +4685,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1635539093}
-  - component: {fileID: 1635539092}
   - component: {fileID: 1635539091}
+  - component: {fileID: 1635539092}
   m_Layer: 0
   m_Name: MoneyManager
   m_TagString: Untagged
@@ -4928,6 +4928,6 @@ SceneRoots:
   - {fileID: 1103676974}
   - {fileID: 2053063455}
   - {fileID: 1666912060}
+  - {fileID: 1635539093}
   - {fileID: 30237628}
   - {fileID: 2118578204}
-  - {fileID: 1635539093}
