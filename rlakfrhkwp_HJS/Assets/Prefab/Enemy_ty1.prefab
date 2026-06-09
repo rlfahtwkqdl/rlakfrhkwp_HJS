@@ -175,6 +175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 832945309254210727}
+  - component: {fileID: 2756599299454734940}
   - component: {fileID: 1372892759461362945}
   m_Layer: 0
   m_Name: Enemy_ty1
@@ -200,6 +201,19 @@ Transform:
   - {fileID: 5581512848767608455}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2756599299454734940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3777284608353971171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4847b65293268f348bab3eb0bfe64422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  maxHp: 2
 --- !u!114 &1372892759461362945
 MonoBehaviour:
   m_ObjectHideFlags: 0
