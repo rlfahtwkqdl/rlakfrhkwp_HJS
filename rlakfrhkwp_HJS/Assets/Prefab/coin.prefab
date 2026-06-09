@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4af1161e0a464441b503d376fe5acde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Coin
+  coinData: {fileID: 11400000, guid: 92e7cab438b9010408cf32f5e4cf02ff, type: 2}
 --- !u!58 &8087827812296629205
 CircleCollider2D:
   m_ObjectHideFlags: 0

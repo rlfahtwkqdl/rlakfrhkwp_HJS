@@ -2,16 +2,25 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    // 무언가 이 코인의 콜라이더 안으로 "쏙" 들어왔을 때 유니티가 자동으로 실행해 주는 함수
+    [Header("이 코인의 데이터 설정")]
+    [SerializeField] private CoinData coinData; // ★ 은화 프리팹에는 은화 SO를, 금화에는 금화 SO를 조립!
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // 부딪힌 물체의 태그가 "Player" 인지 확인
         if (collision.CompareTag("Player"))
         {
-            // 나중에 여기에 점수 추가 로직(예: ScoreManager.Instance.AddScore(1);)을 넣으면 됩니다!
-            Debug.Log("<color=yellow><b>코인 획득!</b></color>");
+            if (MoneyManager.Instance != null && coinData != null)
+            {
+                // ★ 핵심: 이 코인 SO에 적힌 고유한 가치(Value)를 매니저에게 보냅니다.
+                MoneyManager.Instance.AddMoney(coinData.CoinValue);
 
-            // 코인 오브젝트 파괴 (사라지게 만듦)
+                Debug.Log($"<color=yellow><b>{coinData.CoinName} 획득! (+{coinData.CoinValue}원)</b></color>");
+            }
+            else if (coinData == null)
+            {
+                Debug.LogError($"{gameObject.name}: CoinData가 연결되지 않았습니다!");
+            }
+
             Destroy(gameObject);
         }
     }

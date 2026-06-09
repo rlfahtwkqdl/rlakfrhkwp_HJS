@@ -16,14 +16,20 @@ MonoBehaviour:
   maxSpawnRadius: 3
   phases:
   - phaseName: 1
-    duration: 10
+    duration: 100
     spawnInterval: 2
     enemyPool:
     - enemyPrefab: {fileID: 3777284608353971171, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
       weight: 5
+    moneySpawnInterval: 3
+    moneyPool:
+    - moneyPrefab: {fileID: 7251844634844483668, guid: 23d588f35f6092b428c8bebe6c5106a0, type: 3}
+      weight: 1
   - phaseName: 2
     duration: 99
     spawnInterval: 0.5
     enemyPool:
     - enemyPrefab: {fileID: 3777284608353971171, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
       weight: 1
+    moneySpawnInterval: 0
+    moneyPool: []
