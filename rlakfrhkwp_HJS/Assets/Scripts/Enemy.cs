@@ -54,6 +54,7 @@ public class Enemy : MonoBehaviour
         Debug.Log($"{gameObject.name} 파괴됨.");
         Destroy(gameObject);
     }
+
     [Header("이동할 씬 이름")]
     [SerializeField] private string gameOverSceneName = "CreditsScene"; // 에디터에서 변경 가능
 
