@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-// ★ 이름 충돌을 피하기 위해 'ScoreSaveData'로 이름을 변경했습니다!
 [System.Serializable]
 public class ScoreSaveData
 {
-    public int highScore = -999999;   // 최고 기록
-    public int lowestScore = 999999;  // 최저 기록
-    public List<int> recentScores = new List<int>(); // 최근 5판 기록
-    public bool hasPlayedBefore = false; // 첫 플레이 판별용
+    public int highScore = -999999;
+    public int lowestScore = 999999;
+    public List<int> recentScores = new List<int>();
+    public bool hasPlayedBefore = false;
 }
 
 public class ScoreManager : MonoBehaviour
@@ -26,7 +26,6 @@ public class ScoreManager : MonoBehaviour
     private float survivalTimer = 0f;
     private string savePath;
 
-    // 타이틀 패널에서 꺼내 쓸 변수들
     private int highScore = 0;
     private int lowestScore = 0;
     private List<int> recentScores = new List<int>();
@@ -46,13 +45,51 @@ public class ScoreManager : MonoBehaviour
         }
         else
         {
+            // 중복된 매니저가 파괴될 때는 단순 return하여 기존 Instance를 절대 건드리지 않음
             Destroy(gameObject);
             return;
         }
 
-        // 스코어 전용 세이브 파일명도 scoreSaveData.json으로 변경하여 안전하게 분리합니다.
         savePath = Path.Combine(Application.persistentDataPath, "scoreSaveData.json");
         LoadGameData();
+    }
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    // ★ 안전장치: 진짜 싱글톤 오브젝트가 완전히 파괴될 때만 주소를 비워줍니다.
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 인게임 씬 이름 대소문자 확인 필수
+        if (scene.name == "InGameScene")
+        {
+            ResetScoreForNewGame();
+        }
+    }
+
+    private void ResetScoreForNewGame()
+    {
+        currentScore = 0;
+        survivalTimer = 0f;
+
+        // 새로 태어날 UI들을 위해 이벤트를 한 번 쏴줌
+        OnScoreChanged?.Invoke(currentScore);
+        Debug.Log("[ScoreManager] 점수 및 타이머 완전히 초기화됨.");
     }
 
     void Start()
@@ -111,7 +148,6 @@ public class ScoreManager : MonoBehaviour
 
     public void SaveGameData()
     {
-        // ★ ScoreSaveData 클래스를 사용하도록 변경
         ScoreSaveData data = new ScoreSaveData
         {
             highScore = this.highScore,
@@ -122,7 +158,6 @@ public class ScoreManager : MonoBehaviour
 
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
-        Debug.Log("[ScoreManager] 최고/최저/최근 전적 저장 완료!");
     }
 
     public void LoadGameData()
@@ -130,14 +165,12 @@ public class ScoreManager : MonoBehaviour
         if (File.Exists(savePath))
         {
             string json = File.ReadAllText(savePath);
-            // ★ ScoreSaveData 클래스를 사용하도록 변경
             ScoreSaveData data = JsonUtility.FromJson<ScoreSaveData>(json);
 
             highScore = data.highScore;
             lowestScore = data.lowestScore;
             recentScores = data.recentScores ?? new List<int>();
             hasPlayedBefore = data.hasPlayedBefore;
-            Debug.Log("[ScoreManager] 전적 데이터 로드 완료.");
         }
         else
         {
@@ -158,8 +191,6 @@ public class ScoreManager : MonoBehaviour
         int sessionMoney = MoneyManager.Instance.CurrentMoney;
 
         FinalCalculatedScore = (score + sessionMoney) * -1;
-
-        Debug.Log($"[ScoreManager] 최종 점수 계산 완료: {FinalCalculatedScore}");
         UpdateScoreHistory(FinalCalculatedScore);
     }
 

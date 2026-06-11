@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82e8c51cb428adb4e9ac2cfe45a288af, type: 3}
-  m_Name: ScoreData
-  m_EditorClassIdentifier: Assembly-CSharp::ScoreData
-  regularKillScore: 10
-  headshotKillScore: 25
-  scorePerInterval: 1
-  survivalInterval: 0.1
+  m_Script: {fileID: 11500000, guid: b060ba84a0c60f544ba6b09cf426094e, type: 3}
+  m_Name: EscapeConfig
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeConfig
+  escapeDuration: 2
