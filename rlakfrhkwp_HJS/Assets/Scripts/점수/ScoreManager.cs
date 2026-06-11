@@ -76,7 +76,7 @@ public class ScoreManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // 인게임 씬 이름 대소문자 확인 필수
-        if (scene.name == "InGameScene")
+        if (scene.name == "MainGame")
         {
             ResetScoreForNewGame();
         }

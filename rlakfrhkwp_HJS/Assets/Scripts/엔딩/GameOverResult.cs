@@ -35,17 +35,17 @@ public class GameOverResult : MonoBehaviour
             // 2. [컨셉용] 점수대별 매운맛 평가 문구 분기 (★ 추가)
             if (evaluationText != null)
             {
-                if (finalScore <= -10000)
+                if (finalScore <= -1)
                 {
-                    evaluationText.text = "잡힘3.";
+                    evaluationText.text = "잡힘.";
                 }
-                else if (finalScore <= -5000)
+                else if (finalScore <= 1)
                 {
-                    evaluationText.text = "잡힘2.";
+                    evaluationText.text = "도망침.";
                 }
                 else
                 {
-                    evaluationText.text = "잡힘.";
+                    evaluationText.text = "어떻게 한거요?.";
                 }
             }
         }

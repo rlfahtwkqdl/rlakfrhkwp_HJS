@@ -3,7 +3,7 @@ using TMPro;
 
 public class SuccessEndingUI : MonoBehaviour
 {
-    [Header("성공 결과 UI 텍스트")]
+    [Header("성공 결과 UI 텍스트 컴포넌트 연결")]
     [SerializeField] private TextMeshProUGUI totalScoreText;
     [SerializeField] private TextMeshProUGUI totalMoneyText;
 
@@ -14,7 +14,7 @@ public class SuccessEndingUI : MonoBehaviour
 
     private void DisplayFinalResults()
     {
-        // 1. 파괴되지 않고 넘어온 ScoreManager에서 온전한 총 획득 점수 반영
+        // 1. 점수 반영 (양수 그대로 가져옴)
         if (ScoreManager.Instance != null)
         {
             int finalScore = ScoreManager.Instance.CurrentScore;
@@ -25,10 +25,11 @@ public class SuccessEndingUI : MonoBehaviour
             totalScoreText.text = "총 획득 점수 : 0 PTS";
         }
 
-        // 2. 파괴되지 않고 넘어온 MoneyManager(가칭)에서 총 획득 골드 반영
+        // 2. 이번 판에 획득한 돈 반영
         if (MoneyManager.Instance != null)
         {
-            int finalMoney = MoneyManager.Instance.CurrentMoney; // 매니저에 구현된 변수명에 맞게 수정하세요!
+            // MoneyManager의 CurrentMoney(이번 판 번 돈)을 안전하게 가져옵니다.
+            int finalMoney = MoneyManager.Instance.CurrentMoney;
             totalMoneyText.text = $"획득한 돈 : {finalMoney:N0} GOLD";
         }
         else

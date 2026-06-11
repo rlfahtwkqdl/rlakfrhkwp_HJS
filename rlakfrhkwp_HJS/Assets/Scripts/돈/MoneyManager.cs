@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement; // ★ 씬 감지를 위해 추가
 
 [System.Serializable]
 public class MoneySaveData
@@ -14,19 +15,29 @@ public class MoneyManager : MonoBehaviour
 
     public event Action<int> OnMoneyChanged;
 
-    private int totalMoney = 0;    // ★ 뒤에서 몰래 계속 쌓이는 전체 누적 자산 (JSON 저장/로드 대상)
-    private int sessionMoney = 0;  // ★ 이번 게임(스테이지)에서만 획득한 돈 (UI 표시용)
+    private int totalMoney = 0;    // 뒤에서 몰래 계속 쌓이는 전체 누적 자산 (JSON 저장/로드 대상)
+    private int sessionMoney = 0;  // 이번 게임(스테이지)에서만 획득한 돈 (UI 표시용)
 
     // 기존 UI 코드가 CurrentMoney를 쓰고 있으므로, 이번 판에 번 돈을 반환하게 합니다.
     public int CurrentMoney => sessionMoney;
 
-    // ★ 나중에 타이틀 화면이나 상점 스크립트에서 전체 자산을 확인하고 싶을 때 쓸 프로퍼티
+    // 나중에 타이틀 화면이나 상점 스크립트에서 전체 자산을 확인하고 싶을 때 쓸 프로퍼티
     public int TotalMoney => totalMoney;
+
+    private string savePath;
 
     void Awake()
     {
-        if (Instance == null) { Instance = this; }
-        else { Destroy(gameObject); }
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // ★ [수정] 이게 빠져있어서 매니저가 죽었던 것입니다! 영원히 살려둡니다.
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         savePath = Path.Combine(Application.persistentDataPath, "moneyData.json");
 
@@ -34,10 +45,43 @@ public class MoneyManager : MonoBehaviour
         LoadMoneyData();
     }
 
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
+    // ★ [추정] 새로운 판(인게임 씬)이 열릴 때 자동으로 이번 판 돈을 0원으로 리셋해 줍니다.
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 본인의 실제 인게임 씬 이름과 똑같이 맞추세요 (대소문자 구별 필수)
+        if (scene.name == "MainGame")
+        {
+            ResetMoneyForNewGame();
+        }
+    }
+
+    public void ResetMoneyForNewGame()
+    {
+        sessionMoney = 0;
+        OnMoneyChanged?.Invoke(sessionMoney);
+        Debug.Log("[MoneyManager] 이번 판 획득 금액이 0원으로 초기화되었습니다.");
+    }
+
     void Start()
     {
-        // ★ 이번 판은 0원부터 상쾌하게 시작! UI에도 0을 먼저 띄웁니다.
-        sessionMoney = 0;
         OnMoneyChanged?.Invoke(sessionMoney);
     }
 
@@ -50,7 +94,7 @@ public class MoneyManager : MonoBehaviour
         // 2. 전체 누적 자산도 동시에 증가 (뒤에서 몰래 쌓이는 중)
         totalMoney += amount;
 
-        // ★ UI에는 이번 판에 번 돈(sessionMoney)만 알려줍니다!
+        // UI에는 이번 판에 번 돈(sessionMoney)만 알려줍니다!
         OnMoneyChanged?.Invoke(sessionMoney);
     }
 
@@ -84,6 +128,4 @@ public class MoneyManager : MonoBehaviour
     {
         SaveMoneyData();
     }
-
-    private string savePath;
 }
