@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement; // ★ 씬 전환을 위해 반드시 추가!
 
 public class ClickDamageTest : MonoBehaviour
 {
     [Header("데이터 연결")]
     [SerializeField] private GunData gunData;
+    [SerializeField] private string teamKillSceneName = "TeamKillEndingScene"; // ★ 팀킬 엔딩 씬 이름
 
     private bool isReloading = false;
 
@@ -13,7 +15,6 @@ public class ClickDamageTest : MonoBehaviour
     {
         if (isReloading || gunData == null) return;
 
-        // 마우스 왼쪽 버튼 클릭 감지
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             CastRayFromMouse();
@@ -28,32 +29,38 @@ public class ClickDamageTest : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
-        // 이번 사격 후 장전을 할지 말지 결정하는 변수 (기본값은 장전 함)
         bool shouldReload = true;
 
-        // 충돌 결과 처리
         if (hit.collider != null)
         {
+            // ★ [수정] 오인 사격 (아군/플레이어 타격) 시 처리
             if (hit.collider.CompareTag("Player"))
             {
-                Debug.Log("<color=red>오인사격</color>");
+                Debug.Log("<color=red><b>오인사격! 작전 실패!</b></color>");
+
+                // 1. 점수 매니저를 호출해 점수 음수화(* -1) 및 JSON 저장 실행
+                if (ScoreManager.Instance != null)
+                {
+                    ScoreManager.Instance.CalculateFinalScore();
+                }
+
+                // 2. 미련 없이 즉시 팀킬 엔딩 씬으로 이동 (아래 장전 루틴 등 실행 방지)
+                SceneManager.LoadScene(teamKillSceneName);
+                return;
             }
             // Head나 Enemy 태그를 가진 오브젝트를 쐈을 때
             else if (hit.collider.CompareTag("Head") || hit.collider.CompareTag("Enemy"))
             {
-                // 부모를 포함하여 상위에 있는 Enemy 스크립트를 검색
                 Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
 
                 if (enemy != null)
                 {
-                    // ★ [경우 1] 적 머리 타격 (즉사 및 장전 스킵)
                     if (hit.collider.CompareTag("Head"))
                     {
                         Debug.Log("<color=yellow><b>머리통! 장전 시간 초기화 (즉시 재사격 가능)!</b></color>");
                         enemy.InstantKill();
-                        shouldReload = false; // 헤드샷 성공 시 장전 건너뜀
+                        shouldReload = false;
                     }
-                    // ★ [경우 2] 몸샷 타격 (데미지 1)
                     else if (hit.collider.CompareTag("Enemy"))
                     {
                         Debug.Log("<color=orange>몸 샷</color>");
@@ -75,7 +82,6 @@ public class ClickDamageTest : MonoBehaviour
             Debug.Log("허공을 클릭했습니다 (맞은 오브젝트 없음).");
         }
 
-        // 헤드샷 성공 시(shouldReload가 false가 됨) 코루틴을 실행하지 않아 즉시 또 쏠 수 있습니다.
         if (shouldReload)
         {
             StartCoroutine(ReloadRoutine());

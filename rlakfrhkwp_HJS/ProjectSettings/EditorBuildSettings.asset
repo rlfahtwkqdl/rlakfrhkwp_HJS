@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SuccessEndingScene.unity
     guid: db36bf70b7f612a49848316bd2f93f66
   - enabled: 1
+    path: Assets/Scenes/TeamKillEndingScene.unity
+    guid: e2d1e39ff9218e841bdc7e2d175c3f36
+  - enabled: 1
     path: Assets/Scenes/Gameover.unity
     guid: 1d9dbad2fded29441846f2427dc954b8
   m_configObjects:
