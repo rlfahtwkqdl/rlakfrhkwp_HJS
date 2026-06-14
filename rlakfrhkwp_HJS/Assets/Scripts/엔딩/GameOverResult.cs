@@ -1,20 +1,20 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
 public class GameOverResult : MonoBehaviour
 {
-    [Header("UI ÄÄÆ÷³ÍÆ® ¿¬°á")]
+    [Header("UI ì»´í¬ë„ŒíŠ¸ ì—°ê²°")]
     [SerializeField] private TextMeshProUGUI finalScoreText;
-    [SerializeField] private TextMeshProUGUI evaluationText; // ¡Ú Ãß°¡: ¹èµå¿£µù Æò°¡ ¹®±¸
+    [SerializeField] private TextMeshProUGUI evaluationText; // â˜… ì¶”ê°€: ë°°ë“œì—”ë”© í‰ê°€ ë¬¸êµ¬
 
-    [Header("ÀÌµ¿ÇÒ ¾À ÀÌ¸§")]
+    [Header("ì´ë™í•  ì”¬ ì´ë¦„")]
     [SerializeField] private string inGameSceneName = "InGameScene";
     [SerializeField] private string titleSceneName = "TitleScene";
 
     void Start()
     {
-        // ¾ÀÀÌ ½ÃÀÛµÇÀÚ¸¶ÀÚ °á°ú Ç¥½Ã
+        // ì”¬ì´ ì‹œì‘ë˜ìë§ˆì ê²°ê³¼ í‘œì‹œ
         DisplayFinalScore();
     }
 
@@ -24,7 +24,7 @@ public class GameOverResult : MonoBehaviour
         {
             int finalScore = ScoreManager.FinalCalculatedScore;
 
-            // 1. Á¡¼ö ÅØ½ºÆ® Ç¥½Ã
+            // 1. ì ìˆ˜ í…ìŠ¤íŠ¸ í‘œì‹œ
             finalScoreText.text = $"FINAL SCORE : {finalScore:N0}";
 
             if (finalScore < 0)
@@ -32,38 +32,38 @@ public class GameOverResult : MonoBehaviour
                 finalScoreText.color = Color.red;
             }
 
-            // 2. [ÄÁ¼Á¿ë] Á¡¼ö´ëº° ¸Å¿î¸À Æò°¡ ¹®±¸ ºĞ±â (¡Ú Ãß°¡)
+            // 2. [ì»¨ì…‰ìš©] ì ìˆ˜ëŒ€ë³„ ë§¤ìš´ë§› í‰ê°€ ë¬¸êµ¬ ë¶„ê¸° (â˜… ì¶”ê°€)
             if (evaluationText != null)
             {
                 if (finalScore <= -1)
                 {
-                    evaluationText.text = "ÀâÈû.";
+                    evaluationText.text = "ì¡í˜.";
                 }
                 else if (finalScore <= 1)
                 {
-                    evaluationText.text = "µµ¸ÁÄ§.";
+                    evaluationText.text = "ë„ë§ì¹¨.";
                 }
                 else
                 {
-                    evaluationText.text = "¾î¶»°Ô ÇÑ°Å¿ä?.";
+                    evaluationText.text = "ì–´ë–»ê²Œ í•œê±°ìš”?.";
                 }
             }
         }
     }
 
     // ==========================================
-    // ¡Ú Ãß°¡: ¹öÆ° Å¬¸¯ Ã³¸® ÇÔ¼öµé
+    // â˜… ì¶”ê°€: ë²„íŠ¼ í´ë¦­ ì²˜ë¦¬ í•¨ìˆ˜ë“¤
     // ==========================================
 
     public void ClickRetry()
     {
-        Debug.Log("°ÔÀÓÀ» ´Ù½Ã ½ÃÀÛÇÕ´Ï´Ù.");
+        Debug.Log("ê²Œì„ì„ ë‹¤ì‹œ ì‹œì‘í•©ë‹ˆë‹¤.");
         SceneManager.LoadScene(inGameSceneName);
     }
 
     public void ClickMainMenu()
     {
-        Debug.Log("¸ŞÀÎ Å¸ÀÌÆ²·Î ÀÌµ¿ÇÕ´Ï´Ù.");
+        Debug.Log("ë©”ì¸ íƒ€ì´í‹€ë¡œ ì´ë™í•©ë‹ˆë‹¤.");
         SceneManager.LoadScene(titleSceneName);
     }
 }
