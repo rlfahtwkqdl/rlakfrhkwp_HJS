@@ -88,14 +88,26 @@ public class ClickDamageTest : MonoBehaviour
         }
     }
 
+    // ClickDamageTest.cs 내부의 기존 장전 코루틴을 아래처럼 수정하세요!
+
     IEnumerator ReloadRoutine()
     {
         isReloading = true;
         Debug.Log("<color=cyan>[장전 중...]</color>");
 
-        yield return new WaitForSeconds(gunData.ReloadTime);
+        // ==========================================
+        // ★ [수정] UpgradeManager가 존재하면 업그레이드가 반영된 시간을 가져옵니다.
+        float finalReloadTime = gunData.ReloadTime;
+        if (UpgradeManager.Instance != null)
+        {
+            finalReloadTime = UpgradeManager.Instance.GetUpgradedReloadTime(gunData.ReloadTime);
+        }
+
+        // 반영된 최종 시간만큼 대기합니다.
+        yield return new WaitForSeconds(finalReloadTime);
+        // ==========================================
 
         isReloading = false;
-        Debug.Log("<color=green>[장전 완료! 사격 가능]</color>");
+        Debug.Log($"<color=green>[장전 완료! 사격 가능 / 걸린시간: {finalReloadTime:F2}초]</color>");
     }
 }

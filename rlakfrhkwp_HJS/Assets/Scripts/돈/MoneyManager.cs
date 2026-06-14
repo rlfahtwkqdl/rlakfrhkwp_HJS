@@ -1,12 +1,12 @@
-using System;
+ï»¿using System;
 using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement; // ¡Ú ¾À °¨Áö¸¦ À§ÇØ Ãß°¡
+using UnityEngine.SceneManagement; // â˜… ì”¬ ê°ì§€ë¥¼ ìœ„í•´ ì¶”ê°€
 
 [System.Serializable]
 public class MoneySaveData
 {
-    public int totalMoney; // JSON¿¡´Â ¿ÀÁ÷ 'ÀüÃ¼ ´©Àû ±İ¾×'¸¸ ÀúÀåµË´Ï´Ù.
+    public int totalMoney; // JSONì—ëŠ” ì˜¤ì§ 'ì „ì²´ ëˆ„ì  ê¸ˆì•¡'ë§Œ ì €ì¥ë©ë‹ˆë‹¤.
 }
 
 public class MoneyManager : MonoBehaviour
@@ -15,13 +15,13 @@ public class MoneyManager : MonoBehaviour
 
     public event Action<int> OnMoneyChanged;
 
-    private int totalMoney = 0;    // µÚ¿¡¼­ ¸ô·¡ °è¼Ó ½×ÀÌ´Â ÀüÃ¼ ´©Àû ÀÚ»ê (JSON ÀúÀå/·Îµå ´ë»ó)
-    private int sessionMoney = 0;  // ÀÌ¹ø °ÔÀÓ(½ºÅ×ÀÌÁö)¿¡¼­¸¸ È¹µæÇÑ µ· (UI Ç¥½Ã¿ë)
+    private int totalMoney = 0;    // ë’¤ì—ì„œ ëª°ë˜ ê³„ì† ìŒ“ì´ëŠ” ì „ì²´ ëˆ„ì  ìì‚° (JSON ì €ì¥/ë¡œë“œ ëŒ€ìƒ)
+    private int sessionMoney = 0;  // ì´ë²ˆ ê²Œì„(ìŠ¤í…Œì´ì§€)ì—ì„œë§Œ íšë“í•œ ëˆ (UI í‘œì‹œìš©)
 
-    // ±âÁ¸ UI ÄÚµå°¡ CurrentMoney¸¦ ¾²°í ÀÖÀ¸¹Ç·Î, ÀÌ¹ø ÆÇ¿¡ ¹ø µ·À» ¹İÈ¯ÇÏ°Ô ÇÕ´Ï´Ù.
+    // ê¸°ì¡´ UI ì½”ë“œê°€ CurrentMoneyë¥¼ ì“°ê³  ìˆìœ¼ë¯€ë¡œ, ì´ë²ˆ íŒì— ë²ˆ ëˆì„ ë°˜í™˜í•˜ê²Œ í•©ë‹ˆë‹¤.
     public int CurrentMoney => sessionMoney;
 
-    // ³ªÁß¿¡ Å¸ÀÌÆ² È­¸éÀÌ³ª »óÁ¡ ½ºÅ©¸³Æ®¿¡¼­ ÀüÃ¼ ÀÚ»êÀ» È®ÀÎÇÏ°í ½ÍÀ» ¶§ ¾µ ÇÁ·ÎÆÛÆ¼
+    // ë‚˜ì¤‘ì— íƒ€ì´í‹€ í™”ë©´ì´ë‚˜ ìƒì  ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ì „ì²´ ìì‚°ì„ í™•ì¸í•˜ê³  ì‹¶ì„ ë•Œ ì“¸ í”„ë¡œí¼í‹°
     public int TotalMoney => totalMoney;
 
     private string savePath;
@@ -31,7 +31,7 @@ public class MoneyManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // ¡Ú [¼öÁ¤] ÀÌ°Ô ºüÁ®ÀÖ¾î¼­ ¸Å´ÏÀú°¡ Á×¾ú´ø °ÍÀÔ´Ï´Ù! ¿µ¿øÈ÷ »ì·ÁµÓ´Ï´Ù.
+            DontDestroyOnLoad(gameObject); // â˜… [ìˆ˜ì •] ì´ê²Œ ë¹ ì ¸ìˆì–´ì„œ ë§¤ë‹ˆì €ê°€ ì£½ì—ˆë˜ ê²ƒì…ë‹ˆë‹¤! ì˜ì›íˆ ì‚´ë ¤ë‘¡ë‹ˆë‹¤.
         }
         else
         {
@@ -41,7 +41,7 @@ public class MoneyManager : MonoBehaviour
 
         savePath = Path.Combine(Application.persistentDataPath, "moneyData.json");
 
-        // °ÔÀÓ ½ÃÀÛ ½Ã ÀÌÀü ÆÇ±îÁö ¸ğ¾Ò´ø ÃÑ ÀÚ»êÀ» ºÒ·¯¿É´Ï´Ù.
+        // ê²Œì„ ì‹œì‘ ì‹œ ì´ì „ íŒê¹Œì§€ ëª¨ì•˜ë˜ ì´ ìì‚°ì„ ë¶ˆëŸ¬ì˜µë‹ˆë‹¤.
         LoadMoneyData();
     }
 
@@ -63,10 +63,10 @@ public class MoneyManager : MonoBehaviour
         }
     }
 
-    // ¡Ú [ÃßÁ¤] »õ·Î¿î ÆÇ(ÀÎ°ÔÀÓ ¾À)ÀÌ ¿­¸± ¶§ ÀÚµ¿À¸·Î ÀÌ¹ø ÆÇ µ·À» 0¿øÀ¸·Î ¸®¼ÂÇØ Áİ´Ï´Ù.
+    // â˜… [ì¶”ì •] ìƒˆë¡œìš´ íŒ(ì¸ê²Œì„ ì”¬)ì´ ì—´ë¦´ ë•Œ ìë™ìœ¼ë¡œ ì´ë²ˆ íŒ ëˆì„ 0ì›ìœ¼ë¡œ ë¦¬ì…‹í•´ ì¤ë‹ˆë‹¤.
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // º»ÀÎÀÇ ½ÇÁ¦ ÀÎ°ÔÀÓ ¾À ÀÌ¸§°ú ¶È°°ÀÌ ¸ÂÃß¼¼¿ä (´ë¼Ò¹®ÀÚ ±¸º° ÇÊ¼ö)
+        // ë³¸ì¸ì˜ ì‹¤ì œ ì¸ê²Œì„ ì”¬ ì´ë¦„ê³¼ ë˜‘ê°™ì´ ë§ì¶”ì„¸ìš” (ëŒ€ì†Œë¬¸ì êµ¬ë³„ í•„ìˆ˜)
         if (scene.name == "MainGame")
         {
             ResetMoneyForNewGame();
@@ -77,7 +77,7 @@ public class MoneyManager : MonoBehaviour
     {
         sessionMoney = 0;
         OnMoneyChanged?.Invoke(sessionMoney);
-        Debug.Log("[MoneyManager] ÀÌ¹ø ÆÇ È¹µæ ±İ¾×ÀÌ 0¿øÀ¸·Î ÃÊ±âÈ­µÇ¾ú½À´Ï´Ù.");
+        Debug.Log("[MoneyManager] ì´ë²ˆ íŒ íšë“ ê¸ˆì•¡ì´ 0ì›ìœ¼ë¡œ ì´ˆê¸°í™”ë˜ì—ˆìŠµë‹ˆë‹¤.");
     }
 
     void Start()
@@ -85,27 +85,27 @@ public class MoneyManager : MonoBehaviour
         OnMoneyChanged?.Invoke(sessionMoney);
     }
 
-    // ÄÚÀÎÀ» ¸ÔÀ» ¶§¸¶´Ù ½ÇÇàµÇ´Â ÇÔ¼ö
+    // ì½”ì¸ì„ ë¨¹ì„ ë•Œë§ˆë‹¤ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
     public void AddMoney(int amount)
     {
-        // 1. ÀÌ¹ø ÆÇ È¹µæ·® Áõ°¡ (È­¸é Ç¥½Ã¿ë)
+        // 1. ì´ë²ˆ íŒ íšë“ëŸ‰ ì¦ê°€ (í™”ë©´ í‘œì‹œìš©)
         sessionMoney += amount;
 
-        // 2. ÀüÃ¼ ´©Àû ÀÚ»êµµ µ¿½Ã¿¡ Áõ°¡ (µÚ¿¡¼­ ¸ô·¡ ½×ÀÌ´Â Áß)
+        // 2. ì „ì²´ ëˆ„ì  ìì‚°ë„ ë™ì‹œì— ì¦ê°€ (ë’¤ì—ì„œ ëª°ë˜ ìŒ“ì´ëŠ” ì¤‘)
         totalMoney += amount;
 
-        // UI¿¡´Â ÀÌ¹ø ÆÇ¿¡ ¹ø µ·(sessionMoney)¸¸ ¾Ë·ÁÁİ´Ï´Ù!
+        // UIì—ëŠ” ì´ë²ˆ íŒì— ë²ˆ ëˆ(sessionMoney)ë§Œ ì•Œë ¤ì¤ë‹ˆë‹¤!
         OnMoneyChanged?.Invoke(sessionMoney);
     }
 
     public void SaveMoneyData()
     {
-        // ÀúÀåÇÒ ¶§´Â ÀÌ¹ø ÆÇ¿¡ ¹ø µ·ÀÌ ¾Æ´Ï¶ó, '´©ÀûµÈ ÃÑ¾×'À» ÀúÀåÇÕ´Ï´Ù.
+        // ì €ì¥í•  ë•ŒëŠ” ì´ë²ˆ íŒì— ë²ˆ ëˆì´ ì•„ë‹ˆë¼, 'ëˆ„ì ëœ ì´ì•¡'ì„ ì €ì¥í•©ë‹ˆë‹¤.
         MoneySaveData data = new MoneySaveData { totalMoney = totalMoney };
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
 
-        Debug.Log($"[MoneyManager] µ¥ÀÌÅÍ ¹é¾÷ ¿Ï·á! ÇöÀç ÃÑ ÀÚ»ê: {totalMoney}¿ø (ÀÌ¹ø ÆÇ È¹µæ: {sessionMoney}¿ø)");
+        Debug.Log($"[MoneyManager] ë°ì´í„° ë°±ì—… ì™„ë£Œ! í˜„ì¬ ì´ ìì‚°: {totalMoney}ì› (ì´ë²ˆ íŒ íšë“: {sessionMoney}ì›)");
     }
 
     public void LoadMoneyData()
@@ -115,13 +115,33 @@ public class MoneyManager : MonoBehaviour
             string json = File.ReadAllText(savePath);
             MoneySaveData data = JsonUtility.FromJson<MoneySaveData>(json);
 
-            // ºÒ·¯¿Ã ¶§µµ ÀüÃ¼ ÀÚ»ê º¯¼ö¿¡ ³Ö¾îÁİ´Ï´Ù.
+            // ë¶ˆëŸ¬ì˜¬ ë•Œë„ ì „ì²´ ìì‚° ë³€ìˆ˜ì— ë„£ì–´ì¤ë‹ˆë‹¤.
             totalMoney = data.totalMoney;
         }
         else
         {
             totalMoney = 0;
         }
+    }
+
+    // â˜… MoneyManager.cs ë‚´ë¶€ì— ì´ í•¨ìˆ˜ë¥¼ ì¶”ê°€í•´ ì£¼ì„¸ìš”!
+    public bool TrySpendMoney(int amount)
+    {
+        // ê°€ì§„ ëˆ„ì  ìì‚°(totalMoney)ì´ ì†Œëª¨í•  ê¸ˆì•¡ë³´ë‹¤ ë§ë‹¤ë©´ ì‹¤í–‰
+        if (totalMoney >= amount)
+        {
+            totalMoney -= amount;
+            SaveMoneyData(); // ì°¨ê° ì¦‰ì‹œ JSONì— ì €ì¥ ë°±ì—…
+
+            // UI ê°±ì‹ ì„ ìœ„í•´ ì´ë²¤íŠ¸ ì‹¤í–‰ (ì„¸ì…˜ ëˆì´ ì•„ë‹Œ ì „ì²´ ëˆ ê¸°ë°˜ UIë¥¼ ìœ„í•´ í•„ìš”í•œ ê²½ìš° ëŒ€ë¹„)
+            OnMoneyChanged?.Invoke(sessionMoney);
+
+            Debug.Log($"[MoneyManager] {amount}ì› ì†Œë¹„ ì™„ë£Œ! ë‚¨ì€ ì´ ìì‚°: {totalMoney}ì›");
+            return true; // êµ¬ë§¤ ì„±ê³µ
+        }
+
+        Debug.LogWarning("[MoneyManager] ì”ì•¡ì´ ë¶€ì¡±í•˜ì—¬ êµ¬ë§¤í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+        return false; // êµ¬ë§¤ ì‹¤íŒ¨ (ì”ì•¡ ë¶€ì¡±)
     }
 
     private void OnApplicationQuit()
