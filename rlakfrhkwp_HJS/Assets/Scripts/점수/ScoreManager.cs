@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -19,7 +19,7 @@ public class ScoreManager : MonoBehaviour
 
     public event Action<int> OnScoreChanged;
 
-    [Header("µ¥ÀÌÅÍ ¿¬°á")]
+    [Header("ë°ì´í„° ì—°ê²°")]
     [SerializeField] private ScoreData scoreData;
 
     private int currentScore = 0;
@@ -45,7 +45,7 @@ public class ScoreManager : MonoBehaviour
         }
         else
         {
-            // Áßº¹µÈ ¸Å´ÏÀú°¡ ÆÄ±«µÉ ¶§´Â ´Ü¼ø returnÇÏ¿© ±âÁ¸ Instance¸¦ Àı´ë °Çµå¸®Áö ¾ÊÀ½
+            // ì¤‘ë³µëœ ë§¤ë‹ˆì €ê°€ íŒŒê´´ë  ë•ŒëŠ” ë‹¨ìˆœ returní•˜ì—¬ ê¸°ì¡´ Instanceë¥¼ ì ˆëŒ€ ê±´ë“œë¦¬ì§€ ì•ŠìŒ
             Destroy(gameObject);
             return;
         }
@@ -64,7 +64,7 @@ public class ScoreManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // ¡Ú ¾ÈÀüÀåÄ¡: ÁøÂ¥ ½Ì±ÛÅæ ¿ÀºêÁ§Æ®°¡ ¿ÏÀüÈ÷ ÆÄ±«µÉ ¶§¸¸ ÁÖ¼Ò¸¦ ºñ¿öÁİ´Ï´Ù.
+    // â˜… ì•ˆì „ì¥ì¹˜: ì§„ì§œ ì‹±ê¸€í†¤ ì˜¤ë¸Œì íŠ¸ê°€ ì™„ì „íˆ íŒŒê´´ë  ë•Œë§Œ ì£¼ì†Œë¥¼ ë¹„ì›Œì¤ë‹ˆë‹¤.
     private void OnDestroy()
     {
         if (Instance == this)
@@ -75,7 +75,7 @@ public class ScoreManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // ÀÎ°ÔÀÓ ¾À ÀÌ¸§ ´ë¼Ò¹®ÀÚ È®ÀÎ ÇÊ¼ö
+        // ì¸ê²Œì„ ì”¬ ì´ë¦„ ëŒ€ì†Œë¬¸ì í™•ì¸ í•„ìˆ˜
         if (scene.name == "MainGame")
         {
             ResetScoreForNewGame();
@@ -87,9 +87,9 @@ public class ScoreManager : MonoBehaviour
         currentScore = 0;
         survivalTimer = 0f;
 
-        // »õ·Î ÅÂ¾î³¯ UIµéÀ» À§ÇØ ÀÌº¥Æ®¸¦ ÇÑ ¹ø ½÷ÁÜ
+        // ìƒˆë¡œ íƒœì–´ë‚  UIë“¤ì„ ìœ„í•´ ì´ë²¤íŠ¸ë¥¼ í•œ ë²ˆ ì´ì¤Œ
         OnScoreChanged?.Invoke(currentScore);
-        Debug.Log("[ScoreManager] Á¡¼ö ¹× Å¸ÀÌ¸Ó ¿ÏÀüÈ÷ ÃÊ±âÈ­µÊ.");
+        Debug.Log("[ScoreManager] ì ìˆ˜ ë° íƒ€ì´ë¨¸ ì™„ì „íˆ ì´ˆê¸°í™”ë¨.");
     }
 
     void Start()
@@ -197,5 +197,20 @@ public class ScoreManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         SaveGameData();
+    }
+
+    // â˜… ScoreManager.cs ë‚´ë¶€ì— ì•„ë˜ í•¨ìˆ˜ë¥¼ ì¶”ê°€í•˜ì„¸ìš”!
+    public void RecordSuccessScore()
+    {
+        int score = currentScore;
+        int sessionMoney = (MoneyManager.Instance != null) ? MoneyManager.Instance.CurrentMoney : 0;
+
+        // ê²Œì„ ì˜¤ë²„ì²˜ëŸ¼ -1ì„ ê³±í•˜ì§€ ì•Šê³ , ì˜¨ì „í•œ 'ì–‘ìˆ˜ í•©ì‚° ì ìˆ˜'ë¡œ ìµœì¢… ì ìˆ˜ ì„¸íŒ…!
+        int finalSuccessScore = score + sessionMoney;
+
+        // ìµœê·¼ ê¸°ë¡ ë¦¬ìŠ¤íŠ¸(recentScores)ì— ë„£ê³  JSON íŒŒì¼ë¡œ ì €ì¥ê¹Œì§€ ì™„ë£Œ!
+        UpdateScoreHistory(finalSuccessScore);
+
+        Debug.Log($"[ScoreManager] íƒˆì¶œ ì„±ê³µ ê¸°ë¡ ì™„ë£Œ! ìµœì¢… ì–‘ìˆ˜ ì ìˆ˜: {finalSuccessScore} PTS");
     }
 }

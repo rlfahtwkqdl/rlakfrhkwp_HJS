@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
@@ -61,6 +61,11 @@ public class EscapeSystem : MonoBehaviour
             {
                 // :F1 구문이 소수점 아래 첫째 자리까지 세팅해 줍니다 (예: 4.9, 3.0)
                 statusText.text = $"{remainingTime:F1}초";
+            }
+
+            if (ScoreManager.Instance != null)
+            {
+                ScoreManager.Instance.RecordSuccessScore();
             }
 
             yield return null;

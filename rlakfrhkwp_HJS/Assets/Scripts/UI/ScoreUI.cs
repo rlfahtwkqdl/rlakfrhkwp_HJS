@@ -1,40 +1,40 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro;
 
 public class ScoreUI : MonoBehaviour
 {
-    [Header("UI ÄÄÆ÷³ÍÆ® ¿¬°á")]
+    [Header("UI ì»´í¬ë„ŒíŠ¸ ì—°ê²°")]
     [SerializeField] private TextMeshProUGUI scoreText;
 
     private void Start()
     {
-        // [¾ÈÀüÀåÄ¡ 1] È¤½Ã¶óµµ ½Ì±ÛÅæ ÀÎ½ºÅÏ½º ¸µÅ©°¡ ÀÏ½ÃÀûÀ¸·Î ±úÁ³´Ù¸é Á÷Á¢ Ã£¾Æ³»±â
+        // [ì•ˆì „ì¥ì¹˜ 1] í˜¹ì‹œë¼ë„ ì‹±ê¸€í†¤ ì¸ìŠ¤í„´ìŠ¤ ë§í¬ê°€ ì¼ì‹œì ìœ¼ë¡œ ê¹¨ì¡Œë‹¤ë©´ ì§ì ‘ ì°¾ì•„ë‚´ê¸°
         if (ScoreManager.Instance == null)
         {
             ScoreManager foundManager = FindObjectOfType<ScoreManager>();
             if (foundManager != null)
             {
-                // Ã£¾Ò´Ù¸é °­Á¦·Î ÀÌº¥Æ® ¿¬°á ¹× ÃÊ±âÈ­ ÈÄ Á¾·á
-                foundManager.OnScoreChanged -= UpdateScoreUI; // Áßº¹ ±¸µ¶ ¹æÁö
+                // ì°¾ì•˜ë‹¤ë©´ ê°•ì œë¡œ ì´ë²¤íŠ¸ ì—°ê²° ë° ì´ˆê¸°í™” í›„ ì¢…ë£Œ
+                foundManager.OnScoreChanged -= UpdateScoreUI; // ì¤‘ë³µ êµ¬ë… ë°©ì§€
                 foundManager.OnScoreChanged += UpdateScoreUI;
                 UpdateScoreUI(foundManager.CurrentScore);
                 return;
             }
         }
 
-        // [¾ÈÀüÀåÄ¡ 2] Á¤»óÀûÀ¸·Î ÀÎ½ºÅÏ½º°¡ Á¸ÀçÇÒ ¶§ÀÇ ¿Ïº®ÇÑ °»½Å
+        // [ì•ˆì „ì¥ì¹˜ 2] ì •ìƒì ìœ¼ë¡œ ì¸ìŠ¤í„´ìŠ¤ê°€ ì¡´ì¬í•  ë•Œì˜ ì™„ë²½í•œ ê°±ì‹ 
         if (ScoreManager.Instance != null)
         {
-            // È¤½Ã ¸ğ¸¦ ÀÌÀü ±¸µ¶ÀÇ ÀÜÀç¸¦ Áö¿ì°í ±ú²ıÇÏ°Ô »õ·Î ±¸µ¶
+            // í˜¹ì‹œ ëª¨ë¥¼ ì´ì „ êµ¬ë…ì˜ ì”ì¬ë¥¼ ì§€ìš°ê³  ê¹¨ë—í•˜ê²Œ ìƒˆë¡œ êµ¬ë…
             ScoreManager.Instance.OnScoreChanged -= UpdateScoreUI;
             ScoreManager.Instance.OnScoreChanged += UpdateScoreUI;
 
-            // ÇöÀç Á¡¼ö(0Á¡)·Î È­¸éÀ» Áï½Ã °­Á¦ ¸®ÇÁ·¹½Ã
+            // í˜„ì¬ ì ìˆ˜(0ì )ë¡œ í™”ë©´ì„ ì¦‰ì‹œ ê°•ì œ ë¦¬í”„ë ˆì‹œ
             UpdateScoreUI(ScoreManager.Instance.CurrentScore);
         }
         else
         {
-            Debug.LogError("[ScoreUI] ScoreManager¸¦ ¾À ÀüÃ¼¿¡¼­ ´« ¾Ä°í Ã£¾ÆºÁµµ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+            Debug.LogError("[ScoreUI] ScoreManagerë¥¼ ì”¬ ì „ì²´ì—ì„œ ëˆˆ ì”»ê³  ì°¾ì•„ë´ë„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
         }
     }
 
@@ -54,8 +54,8 @@ public class ScoreUI : MonoBehaviour
         }
         else
         {
-            // ¡Ú Áß¿ä: ¿¡µğÅÍ¿¡¼­ ½Ç¼ö·Î ÅØ½ºÆ® ÄÄÆ÷³ÍÆ® ¿¬°áÀ» »©¸Ô¾ú´ÂÁö ½Ç½Ã°£ °Ë»ç
-            Debug.LogWarning("[ScoreUI] scoreText ÄÄÆ÷³ÍÆ® ¿¬°áÀÌ ºñ¾îÀÖ½À´Ï´Ù! ÀÎ½ºÆåÅÍ¸¦ È®ÀÎÇÏ¼¼¿ä.");
+            // â˜… ì¤‘ìš”: ì—ë””í„°ì—ì„œ ì‹¤ìˆ˜ë¡œ í…ìŠ¤íŠ¸ ì»´í¬ë„ŒíŠ¸ ì—°ê²°ì„ ë¹¼ë¨¹ì—ˆëŠ”ì§€ ì‹¤ì‹œê°„ ê²€ì‚¬
+            Debug.LogWarning("[ScoreUI] scoreText ì»´í¬ë„ŒíŠ¸ ì—°ê²°ì´ ë¹„ì–´ìˆìŠµë‹ˆë‹¤! ì¸ìŠ¤í™í„°ë¥¼ í™•ì¸í•˜ì„¸ìš”.");
         }
     }
 }
