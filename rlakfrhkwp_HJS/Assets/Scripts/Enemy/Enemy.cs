@@ -1,96 +1,129 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections; // â˜… ì½”ë£¨í‹´(IEnumerator) ì‚¬ìš©ì„ ìœ„í•´ ì¶”ê°€
 
 public class Enemy : MonoBehaviour
 {
-    [Header("µ¥ÀÌÅÍ ¿¬°á")]
+    [Header("ë°ì´í„° ì—°ê²°")]
     [SerializeField] private EnemyData enemyData;
+    [SerializeField] private string gameOverSceneName = "CreditsScene";
+
+    [Header("í˜ì´ë“œì•„ì›ƒ ì„¤ì •")]
+    [SerializeField] private float fadeDuration = 0.25f; // â˜… ëª¸ìƒ· ì‹œ ë¹ ë¥´ê²Œ íˆ¬ëª…í•´ì§ˆ ì‹œê°„ (ì´ˆ)
 
     private int currentHp;
+    private SpriteRenderer spriteRenderer; // â˜… íˆ¬ëª…ë„ë¥¼ ì¡°ì ˆí•˜ê¸° ìœ„í•œ ì»´í¬ë„ŒíŠ¸
+    private Collider2D enemyCollider;      // â˜… ì£½ëŠ” ìˆœê°„ ì¶©ëŒì„ ëŒ ì»´í¬ë„ŒíŠ¸
+    private bool isDead = false;           // â˜… ì¤‘ë³µ ì‚¬ë§ ë°©ì§€ìš© ë°©ì–´ì„ 
 
     void Start()
     {
+        // í•„ìš”í•œ ì»´í¬ë„ŒíŠ¸ ë¯¸ë¦¬ ê°€ì ¸ì˜¤ê¸°
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        enemyCollider = GetComponent<Collider2D>();
+
         if (enemyData != null)
         {
             currentHp = enemyData.MaxHp;
         }
         else
         {
-            Debug.LogError($"{gameObject.name}¿¡ EnemyData°¡ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù!");
+            Debug.LogError($"{gameObject.name}ì— EnemyDataê°€ ì—°ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤!");
             currentHp = 3;
         }
     }
 
-    // [¸ö¼¦] ÀÏ¹İ µ¥¹ÌÁö Ã³¸® (µ¥¹ÌÁö 1)
+    // [ëª¸ìƒ·] ì¼ë°˜ ë°ë¯¸ì§€ ì²˜ë¦¬ (ë°ë¯¸ì§€ 1)
     public void TakeDamage(int damage)
     {
+        if (isDead) return; // ì´ë¯¸ ì£½ì–´ê°€ëŠ” ìƒíƒœë¼ë©´ ë°ë¯¸ì§€ ì—°ì‚° ë¬´ì‹œ
+
         currentHp -= damage;
-        Debug.Log($"{gameObject.name}ÀÌ(°¡) {damage}ÀÇ µ¥¹ÌÁö¸¦ ¹Ş¾Ò½À´Ï´Ù. (³²Àº Ã¼·Â: {currentHp})");
+        Debug.Log($"{gameObject.name}ì´(ê°€) {damage}ì˜ ë°ë¯¸ì§€ë¥¼ ë°›ì•˜ìŠµë‹ˆë‹¤. (ë‚¨ì€ ì²´ë ¥: {currentHp})");
 
         if (currentHp <= 0)
         {
-            // ¸ö¼¦À¸·Î Ã¼·ÂÀÌ ´Ù ´â¾Æ Á×¾úÀ¸¹Ç·Î ÀÌ ¼Ó¼ºÀº headshot = false ÀÔ´Ï´Ù.
             Die(isHeadshot: false);
         }
     }
 
-    // [Çìµå¼¦] Áï»ç Ã³¸®
+    // [í—¤ë“œìƒ·] ì¦‰ì‚¬ ì²˜ë¦¬
     public void InstantKill()
     {
-        Debug.Log($"{gameObject.name}ÀÌ(°¡) Çìµå¼¦À¸·Î Áï»çÇß½À´Ï´Ù!");
-        // Çìµå¼¦À¸·Î Áï»çÇßÀ¸¹Ç·Î headshot = true ÀÔ´Ï´Ù.
+        if (isDead) return; // ì´ë¯¸ ì£½ì–´ê°€ëŠ” ìƒíƒœë¼ë©´ ë¬´ì‹œ
+
+        Debug.Log($"{gameObject.name}ì´(ê°€) í—¤ë“œìƒ·ìœ¼ë¡œ ì¦‰ì‚¬í–ˆìŠµë‹ˆë‹¤!");
         Die(isHeadshot: true);
     }
 
-    // »ç¸Á Ã³¸® ¹× ¿ÀºêÁ§Æ® »èÁ¦ (Á¡¼ö Àü´Ş ±â´É Ãß°¡)
+    // ì‚¬ë§ ì²˜ë¦¬ ë° ì˜¤ë¸Œì íŠ¸ ì‚­ì œ
     private void Die(bool isHeadshot)
     {
-        // ¡Ú ScoreManager°¡ Á¸ÀçÇÑ´Ù¸é Å³ Á¾·ù¿¡ µû¸¥ Á¡¼ö Áö±Ş ¿äÃ»
+        if (isDead) return;
+        isDead = true; // "ë‚˜ ì§€ê¸ˆ ì£½ëŠ” ì¤‘ì´ì•¼!" ì„ ì–¸
+
+        // ğŸš¨ [ê°€ì¥ ì¤‘ìš”] ì£½ëŠ” ìˆœê°„ ì½œë¼ì´ë”(ì¶©ëŒ íŒì •)ë¥¼ ì¦‰ì‹œ êº¼ë²„ë¦½ë‹ˆë‹¤!
+        // ì´ê²Œ ì—†ìœ¼ë©´ íˆ¬ëª…í•´ì§€ë©° ì‚¬ë¼ì§€ëŠ” ì™€ì¤‘ì— í”Œë ˆì´ì–´ì™€ ë¶€ë”ªí˜€ì„œ ì–µìš¸í•˜ê²Œ ê²Œì„ì˜¤ë²„ê°€ ë©ë‹ˆë‹¤.
+        if (enemyCollider != null)
+        {
+            enemyCollider.enabled = false;
+        }
+
+        // ìŠ¤ì½”ì–´ ë§¤ë‹ˆì € ì ìˆ˜ ì§€ê¸‰
         if (ScoreManager.Instance != null)
         {
             ScoreManager.Instance.AddKillScore(isHeadshot);
         }
 
-        Debug.Log($"{gameObject.name} ÆÄ±«µÊ.");
+        if (isHeadshot)
+        {
+            // 1. í—¤ë“œìƒ·: ì•„ê¹Œ ë§Œë“  ë¹¨ê°„ íŒŒí¸ íŒŒí‹°í´ì´ í‘ í„°ì§€ë¯€ë¡œ, ì  ë³¸ì²´ëŠ” ë”œë ˆì´ ì—†ì´ ì¦‰ì‹œ íŒŒê´´!
+            Debug.Log($"{gameObject.name} í—¤ë“œìƒ·ìœ¼ë¡œ ì¦‰ì‹œ íŒŒê´´ë¨.");
+            Destroy(gameObject);
+        }
+        else
+        {
+            // 2. ëª¸ìƒ·: ì œìë¦¬ì—ì„œ ë¹ ë¥´ê²Œ ìŠ¤ë¥´ë¥µ íˆ¬ëª…í•´ì§€ë©° ì‚¬ë¼ì§€ê¸° ì‹œì‘
+            Debug.Log($"{gameObject.name} ëª¸ìƒ· ì‚¬ë§ - í˜ì´ë“œì•„ì›ƒ ì‹œí€€ìŠ¤ ì‹œì‘.");
+            StartCoroutine(FadeOutAndDestroy());
+        }
+    }
+
+    // â˜… [ìƒˆë¡œ ì¶”ê°€] ëª¸í†µ ì‚¬ê²© ì‚¬ë§ ì‹œ ìŠ¤ë¥´ë¥µ ì‚¬ë¼ì§€ëŠ” ì½”ë£¨í‹´
+    private IEnumerator FadeOutAndDestroy()
+    {
+        if (spriteRenderer != null)
+        {
+            Color startColor = spriteRenderer.color;
+            float currentTime = 0f;
+
+            // ì„¤ì •í•œ ì‹œê°„(fadeDuration) ë™ì•ˆ ë§¤ í”„ë ˆì„ íˆ¬ëª…ë„(Alpha)ë¥¼ 1ì—ì„œ 0ìœ¼ë¡œ ê¹ìŒ
+            while (currentTime < fadeDuration)
+            {
+                currentTime += Time.deltaTime;
+                float alpha = Mathf.Lerp(1f, 0f, currentTime / fadeDuration);
+
+                spriteRenderer.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
+                yield return null; // ë‹¤ìŒ í”„ë ˆì„ê¹Œì§€ ëŒ€ê¸°
+            }
+        }
+
+        // ì™„ì „íˆ íˆ¬ëª…í•´ì§€ë©´ ê·¸ì œì„œì•¼ ë©”ëª¨ë¦¬ì—ì„œ ì‚­ì œ
         Destroy(gameObject);
     }
 
-    [Header("ÀÌµ¿ÇÒ ¾À ÀÌ¸§")]
-    [SerializeField] private string gameOverSceneName = "CreditsScene"; // ¿¡µğÅÍ¿¡¼­ º¯°æ °¡´É
-
-    // ¹«¾ğ°¡ ÀÌ Àû(Enemy)ÀÇ Äİ¶óÀÌ´õ ¾ÈÀ¸·Î ÇÃ·¹ÀÌ¾î°¡ "½ï" µé¾î¿ÔÀ» ¶§ ½ÇÇà
+    // í”Œë ˆì´ì–´ê°€ ì ê³¼ ë¶€ë”ªí˜”ì„ ë•Œ (ê²Œì„ì˜¤ë²„)
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // ºÎµúÈù ¹°Ã¼ÀÇ ÅÂ±×°¡ "Player" ÀÎÁö È®ÀÎ
+        if (isDead) return; // â˜… ì´ë¯¸ ì´ ë§ì•„ ì£½ì–´ê°€ëŠ” ì ì´ë¼ë©´ ê²Œì„ì˜¤ë²„ ì²˜ë¦¬ë¥¼ í•˜ì§€ ì•ŠìŒ!
+
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("<color=red><b>ÇÃ·¹ÀÌ¾î°¡ Àû°ú Á¢ÃË! °ÔÀÓ ¿À¹ö ½ÃÄö½º¸¦ ½ÃÀÛÇÕ´Ï´Ù.</b></color>");
+            Debug.Log("<color=red><b>í”Œë ˆì´ì–´ê°€ ì ê³¼ ì ‘ì´‰! ê²Œì„ ì˜¤ë²„ ì‹œí€€ìŠ¤ë¥¼ ì‹œì‘í•©ë‹ˆë‹¤.</b></color>");
 
-            // ==========================================
-            // [°ÔÀÓ¿À¹ö ½ÃÄö½º 3´Ü°è ½ÇÇà]
-            // ==========================================
+            if (MoneyManager.Instance != null) MoneyManager.Instance.SaveMoneyData();
+            if (ScoreManager.Instance != null) ScoreManager.Instance.CalculateFinalScore();
 
-            // 1. µÚ¿¡¼­ ½×ÀÌ´ø ÃÑ ´©Àû ÀÚ»êÀ» JSON ÆÄÀÏ·Î ¾ÈÀüÇÏ°Ô ÀúÀå
-            if (MoneyManager.Instance != null)
-            {
-                MoneyManager.Instance.SaveMoneyData();
-            }
-            else
-            {
-                Debug.LogWarning("Enemy: MoneyManager¸¦ Ã£À» ¼ö ¾ø¾î ÀúÀåÇÏÁö ¸øÇß½À´Ï´Ù.");
-            }
-
-            // 2. ÀÌ¹ø ÆÇ ¼ºÀû(½ºÄÚ¾î + µ· * -1)À» Åä´ë·Î ¹èµå¿£µù ÃÖÁ¾ Á¡¼ö¸¦ °è»ê
-            if (ScoreManager.Instance != null)
-            {
-                ScoreManager.Instance.CalculateFinalScore();
-            }
-            else
-            {
-                Debug.LogWarning("Enemy: ScoreManager¸¦ Ã£À» ¼ö ¾ø¾î ÃÖÁ¾ Á¡¼ö¸¦ °è»êÇÏÁö ¸øÇß½À´Ï´Ù.");
-            }
-
-            // 3. Å©·¹µ÷(°ÔÀÓ¿À¹ö °á°ú) ¾ÀÀ¸·Î ÀüÈ¯
             SceneManager.LoadScene(gameOverSceneName);
         }
     }
