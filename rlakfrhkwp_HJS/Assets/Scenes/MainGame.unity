@@ -4938,7 +4938,7 @@ MonoBehaviour:
   teamKillSceneName: TeamKillEndingScene
   muzzlePoint: {fileID: 1725446196}
   tracerEffectPrefab: {fileID: 1725446197}
-  tracerDuration: 0.05
+  tracerDuration: 0.1
 --- !u!1 &1114043845
 GameObject:
   m_ObjectHideFlags: 0
@@ -5216,6 +5216,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1069513489}
     m_Modifications:
+    - target: {fileID: 468708127603221675, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
+      propertyPath: m_Parameters.colorGradient.ctime0
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 468708127603221675, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
+      propertyPath: m_Parameters.colorGradient.ctime1
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 468708127603221675, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 468708127603221675, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 0.8454546
+      objectReference: {fileID: 0}
+    - target: {fileID: 468708127603221675, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 468708127603221675, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 468708127603221675, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.g
+      value: 0.8454546
+      objectReference: {fileID: 0}
+    - target: {fileID: 468708127603221675, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
+      propertyPath: m_Parameters.colorGradient.m_Mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 468708127603221675, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
       value: 0.27142715

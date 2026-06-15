@@ -107,19 +107,33 @@ public class ClickDamageTest : MonoBehaviour
     // --- ★ [히트스캔 이펙트 코루틴] ---
     IEnumerator SpawnTracer(Vector3 targetPos)
     {
-        // 1. 프리팹 소환
+        // 1. 프리팹 소환 및 위치 세팅
         LineRenderer tracer = Instantiate(tracerEffectPrefab, muzzlePoint.position, Quaternion.identity);
-
-        // 2. 선의 두 점 설정
-        // [0번 점] : 총구 위치 (시작점)
         tracer.SetPosition(0, muzzlePoint.position);
-        // [1번 점] : 마우스 클릭 위치 (끝점)
         tracer.SetPosition(1, targetPos);
 
-        // 3. 아주 짧은 시간(tracerDuration) 동안 화면에 띄움
-        yield return new WaitForSeconds(tracerDuration);
+        // 2. 인스펙터에 설정해 둔 노란색 컬러 정보 기억하기
+        Color startColor = tracer.startColor;
+        Color endColor = tracer.endColor;
 
-        // 4. 시간 지나면 이펙트 파괴
+        float currentTime = 0f;
+
+        // 3. 설정한 이펙트 지속 시간(tracerDuration) 동안 매 프레임 반복 계산
+        while (currentTime < tracerDuration)
+        {
+            currentTime += Time.deltaTime;
+
+            // 시간에 따라 1.0(불투명)에서 0.0(완전 투명)까지 비율 계산 (Lerp)
+            float alpha = Mathf.Lerp(1f, 0f, currentTime / tracerDuration);
+
+            // 기존 색상에 계산된 알파(투명도) 값만 덮어씌우기
+            tracer.startColor = new Color(startColor.r, startColor.g, startColor.b, alpha);
+            tracer.endColor = new Color(endColor.r, endColor.g, endColor.b, alpha);
+
+            yield return null; // 다음 프레임까지 대기 (스르륵 변하는 핵심)
+        }
+
+        // 4. 완전히 투명해지면 오브젝트 파괴
         Destroy(tracer.gameObject);
     }
 
