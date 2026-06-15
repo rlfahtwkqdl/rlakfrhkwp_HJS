@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   maxHp: 2
   moveSpeed: 0.5
-  separationRadius: 0.07
+  separationRadius: 0.09
   separationForce: 1.5
