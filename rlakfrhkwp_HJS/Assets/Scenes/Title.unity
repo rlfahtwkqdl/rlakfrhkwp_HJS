@@ -3494,7 +3494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37bd9a090d2a36b448dd79ed00e29e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
-  maxLevel: 10
+  maxLevel: 20
   baseCost: 5
   timeReductionPerLevel: 0.1
   escapeReductionPerLevel: 1
