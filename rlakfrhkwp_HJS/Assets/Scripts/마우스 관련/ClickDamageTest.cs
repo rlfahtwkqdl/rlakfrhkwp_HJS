@@ -1,20 +1,31 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement; // ★ 씬 전환을 위해 반드시 추가!
+using UnityEngine.SceneManagement;
 
 public class ClickDamageTest : MonoBehaviour
 {
     [Header("데이터 연결")]
     [SerializeField] private GunData gunData;
-    [SerializeField] private string teamKillSceneName = "TeamKillEndingScene"; // ★ 팀킬 엔딩 씬 이름
+    [SerializeField] private string teamKillSceneName = "TeamKillEndingScene";
+
+    [Header("시각 효과 (Tracer)")]
+    // [설정 1] 총구 위치 오브젝트 (Hierarchy에서 총구 쪽에 빈 오브젝트 만들어서 연결)
+    [SerializeField] private Transform muzzlePoint;
+    // [설정 2] 아까 만든 LineRenderer 프리팹
+    [SerializeField] private LineRenderer tracerEffectPrefab;
+    // [설정 3] 이펙트가 화면에 머무는 아주 짧은 시간 (초)
+    [SerializeField] private float tracerDuration = 0.05f;
 
     private bool isReloading = false;
+    // 이펙트를 미리 만들어두고 돌려쓰기 위한 변수 (최적화)
+    private LineRenderer currentTracer;
 
     void Update()
     {
         if (isReloading || gunData == null) return;
 
+        // 마우스 왼쪽 버튼 클릭 감지
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             CastRayFromMouse();
@@ -23,6 +34,13 @@ public class ClickDamageTest : MonoBehaviour
 
     void CastRayFromMouse()
     {
+        // 총구 위치나 프리팹 설정이 안 되어있으면 사격 불가
+        if (muzzlePoint == null || tracerEffectPrefab == null)
+        {
+            Debug.LogError("ClickDamageTest: Muzzle Point 또는 Tracer Prefab이 인스펙터에 연결되지 않았습니다!");
+            return;
+        }
+
         Vector3 mousePos = Mouse.current.position.ReadValue();
         mousePos.z = Mathf.Abs(Camera.main.transform.position.z);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(mousePos);
@@ -31,20 +49,30 @@ public class ClickDamageTest : MonoBehaviour
 
         bool shouldReload = true;
 
+        // --- ★ [시각 효과 로직 시작] ---
+
+        // 1. 클릭한 지점이 최종 목표물 지점 (2D이므로 z는 0)
+        Vector3 targetPosition = new Vector3(mousePosition.x, mousePosition.y, 0f);
+
+        // 2. 이펙트 생성 및 그리기 루틴 시작
+        StartCoroutine(SpawnTracer(targetPosition));
+
+        // --- ★ [시각 효과 로직 끝] ---
+
+
+        // 충돌 결과 처리 (기존 로직 유지)
         if (hit.collider != null)
         {
-            // ★ [수정] 오인 사격 (아군/플레이어 타격) 시 처리
+            // 오인 사격 처리
             if (hit.collider.CompareTag("Player"))
             {
                 Debug.Log("<color=red><b>오인사격! 작전 실패!</b></color>");
 
-                // 1. 점수 매니저를 호출해 점수 음수화(* -1) 및 JSON 저장 실행
                 if (ScoreManager.Instance != null)
                 {
                     ScoreManager.Instance.CalculateFinalScore();
                 }
 
-                // 2. 미련 없이 즉시 팀킬 엔딩 씬으로 이동 (아래 장전 루틴 등 실행 방지)
                 SceneManager.LoadScene(teamKillSceneName);
                 return;
             }
@@ -67,19 +95,7 @@ public class ClickDamageTest : MonoBehaviour
                         enemy.TakeDamage(1);
                     }
                 }
-                else
-                {
-                    Debug.LogWarning($"{hit.collider.name}에 Enemy 스크립트가 부착되어 있지 않습니다!");
-                }
             }
-            else
-            {
-                Debug.Log($"{hit.collider.name} 타격! 데미지를 입혔습니다.");
-            }
-        }
-        else
-        {
-            Debug.Log("허공을 클릭했습니다 (맞은 오브젝트 없음).");
         }
 
         if (shouldReload)
@@ -88,26 +104,29 @@ public class ClickDamageTest : MonoBehaviour
         }
     }
 
-    // ClickDamageTest.cs 내부의 기존 장전 코루틴을 아래처럼 수정하세요!
+    // --- ★ [히트스캔 이펙트 코루틴] ---
+    IEnumerator SpawnTracer(Vector3 targetPos)
+    {
+        // 1. 프리팹 소환
+        LineRenderer tracer = Instantiate(tracerEffectPrefab, muzzlePoint.position, Quaternion.identity);
+
+        // 2. 선의 두 점 설정
+        // [0번 점] : 총구 위치 (시작점)
+        tracer.SetPosition(0, muzzlePoint.position);
+        // [1번 점] : 마우스 클릭 위치 (끝점)
+        tracer.SetPosition(1, targetPos);
+
+        // 3. 아주 짧은 시간(tracerDuration) 동안 화면에 띄움
+        yield return new WaitForSeconds(tracerDuration);
+
+        // 4. 시간 지나면 이펙트 파괴
+        Destroy(tracer.gameObject);
+    }
 
     IEnumerator ReloadRoutine()
     {
         isReloading = true;
-        Debug.Log("<color=cyan>[장전 중...]</color>");
-
-        // ==========================================
-        // ★ [수정] UpgradeManager가 존재하면 업그레이드가 반영된 시간을 가져옵니다.
-        float finalReloadTime = gunData.ReloadTime;
-        if (UpgradeManager.Instance != null)
-        {
-            finalReloadTime = UpgradeManager.Instance.GetUpgradedReloadTime(gunData.ReloadTime);
-        }
-
-        // 반영된 최종 시간만큼 대기합니다.
-        yield return new WaitForSeconds(finalReloadTime);
-        // ==========================================
-
+        yield return new WaitForSeconds(gunData.ReloadTime);
         isReloading = false;
-        Debug.Log($"<color=green>[장전 완료! 사격 가능 / 걸린시간: {finalReloadTime:F2}초]</color>");
     }
 }
