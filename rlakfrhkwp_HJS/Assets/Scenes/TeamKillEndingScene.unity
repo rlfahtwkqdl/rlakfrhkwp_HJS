@@ -1105,8 +1105,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameOverResult
   finalScoreText: {fileID: 0}
   evaluationText: {fileID: 0}
-  inGameSceneName: InGameScene
-  titleSceneName: TitleScene
+  inGameSceneName: MainGame
+  titleSceneName: Title
 --- !u!114 &2027096505
 MonoBehaviour:
   m_ObjectHideFlags: 0

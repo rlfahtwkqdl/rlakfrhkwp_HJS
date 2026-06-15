@@ -3,6 +3,15 @@ using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour
 {
+    public static TitleManager Instance { get; private set; }
+
+    void Awake()
+    {
+        // DontDestroyOnLoad를 하지 않으므로, 씬이 바뀔 때 알아서 파괴됩니다.
+        // 다시 타이틀로 돌아오면 새로 태어난 매니저가 새 UI들과 깨끗하게 연결됩니다.
+        Instance = this;
+    }
+
     [Header("이동할 인게임 씬 이름")]
     [SerializeField] private string inGameSceneName = "InGameScene";
 

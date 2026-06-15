@@ -1638,12 +1638,12 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 974936020}
   - {fileID: 1325604089}
   - {fileID: 1617709481}
   - {fileID: 326905651}
   - {fileID: 748776397}
   - {fileID: 1846500762}
+  - {fileID: 974936020}
   - {fileID: 716461160}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1791,7 +1791,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 4, y: -176}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 507.9, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1033922590
 MonoBehaviour:
@@ -1813,7 +1813,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "(\uAE30\uB85D \uC5C6\uC74C)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
   m_sharedMaterial: {fileID: -3307396237676536985, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
@@ -2202,7 +2202,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 4, y: 34}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 507.9, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1077381052
 MonoBehaviour:
@@ -2224,7 +2224,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "(\uAE30\uB85D \uC5C6\uC74C)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
   m_sharedMaterial: {fileID: -3307396237676536985, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
@@ -2361,7 +2361,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "(\uAE30\uB85D \uC5C6\uC74C)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
   m_sharedMaterial: {fileID: -3307396237676536985, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
@@ -2768,7 +2768,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "(\uAE30\uB85D \uC5C6\uC74C)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
   m_sharedMaterial: {fileID: -3307396237676536985, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
@@ -2859,7 +2859,6 @@ GameObject:
   - component: {fileID: 1407229931}
   - component: {fileID: 1407229930}
   - component: {fileID: 1407229932}
-  - component: {fileID: 1407229933}
   m_Layer: 0
   m_Name: TitleManager
   m_TagString: Untagged
@@ -2913,18 +2912,6 @@ MonoBehaviour:
   reloadLevelText: {fileID: 329895047}
   upgradeCostText: {fileID: 98513809}
   upgradeButton: {fileID: 894637345}
---- !u!114 &1407229933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1407229929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16a5e36e8a643cf4f875d1b826595882, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MoneyManager
 --- !u!1 &1520017186
 GameObject:
   m_ObjectHideFlags: 0
@@ -3277,7 +3264,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 4, y: -95}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 507.9, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1582906408
 MonoBehaviour:
@@ -3299,7 +3286,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "(\uAE30\uB85D \uC5C6\uC74C)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
   m_sharedMaterial: {fileID: -3307396237676536985, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
@@ -3763,7 +3750,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 4, y: -266}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 507.9, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1793637761
 MonoBehaviour:
@@ -3785,7 +3772,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "(\uAE30\uB85D \uC5C6\uC74C)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
   m_sharedMaterial: {fileID: -3307396237676536985, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
@@ -4033,7 +4020,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 4, y: 98}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 507.9, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1872484744
 MonoBehaviour:
@@ -4055,7 +4042,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "(\uAE30\uB85D \uC5C6\uC74C)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
   m_sharedMaterial: {fileID: -3307396237676536985, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
@@ -4272,6 +4259,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2100508059}
   m_CullTransparentMesh: 1
+--- !u!1 &2145907184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2145907186}
+  - component: {fileID: 2145907185}
+  m_Layer: 0
+  m_Name: MoneyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2145907185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145907184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a5e36e8a643cf4f875d1b826595882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoneyManager
+--- !u!4 &2145907186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145907184}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4281,3 +4312,4 @@ SceneRoots:
   - {fileID: 1620074842}
   - {fileID: 1407229931}
   - {fileID: 1520017187}
+  - {fileID: 2145907186}
