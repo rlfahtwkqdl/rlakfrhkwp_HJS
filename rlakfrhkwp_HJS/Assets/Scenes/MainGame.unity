@@ -4939,7 +4939,7 @@ MonoBehaviour:
   muzzlePoint: {fileID: 1725446196}
   tracerEffectPrefab: {fileID: 1725446197}
   tracerDuration: 0.1
-  bodyHitPrefab: {fileID: 3179510508312126506, guid: 9cb5c67d2ff80ca44a59b15d28643b59, type: 3}
+  bodyHitPrefab: {fileID: 6007982835620731611, guid: cab0bc98e0652ab438ac47342557ffe3, type: 3}
   headHitPrefab: {fileID: 3179510508312126506, guid: 9cb5c67d2ff80ca44a59b15d28643b59, type: 3}
 --- !u!1 &1114043845
 GameObject:
