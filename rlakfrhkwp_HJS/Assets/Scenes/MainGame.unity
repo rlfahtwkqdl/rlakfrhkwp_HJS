@@ -4956,6 +4956,9 @@ MonoBehaviour:
   headHitPrefab: {fileID: 3179510508312126506, guid: 9cb5c67d2ff80ca44a59b15d28643b59, type: 3}
   shakeDuration: 0.03
   shakeMagnitude: 0.09
+  fireSound: {fileID: 8300000, guid: 3c2439bc8c0ecdb4aa5504afb4bcba30, type: 3}
+  bodyHitSound: {fileID: 8300000, guid: dc341935e7892c94382399c357572d64, type: 3}
+  headHitSound: {fileID: 8300000, guid: 358e5a15e15f2f84b8502c5db8377645, type: 3}
 --- !u!1 &1114043845
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,7 +27,24 @@ public class ClickDamageTest : MonoBehaviour
     [Range(0f, 2f)] // 너무 세면 화면이 뒤집히니 최대 2 정도로 제한
     [SerializeField] private float shakeMagnitude = 0.2f; // 진동 세기
 
+    [Header("🔴 [추가] 사운드 설정 (오디오 클립)")]
+    [SerializeField] private AudioClip fireSound;       // 총 발사 소리
+    [SerializeField] private AudioClip bodyHitSound;    // 몸통 맞은 소리
+    [SerializeField] private AudioClip headHitSound;    // 헤드샷 소리
+
+    private AudioSource audioSource; // 소리를 재생할 컴포넌트 변수
     private bool isReloading = false;
+
+    // 🔴 [추가] 시작할 때 AudioSource 컴포넌트를 세팅합니다.
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        // 만약 오브젝트에 AudioSource가 없다면 자동으로 추가해 줍니다.
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
 
     void Update()
     {
@@ -58,6 +75,12 @@ public class ClickDamageTest : MonoBehaviour
         Vector3 targetPosition = new Vector3(mousePosition.x, mousePosition.y, 0f);
         StartCoroutine(SpawnTracer(targetPosition));
 
+        // 🔴 [추가] 발사하는 순간 총소리 재생
+        if (audioSource != null && fireSound != null)
+        {
+            audioSource.PlayOneShot(fireSound);
+        }
+
         // 충돌 결과 처리
         if (hit.collider != null)
         {
@@ -78,6 +101,12 @@ public class ClickDamageTest : MonoBehaviour
             {
                 Debug.Log("<color=yellow><b>머리통! 장전 시간 초기화!</b></color>");
 
+                // 🔴 [추가] 헤드샷 사운드 재생
+                if (audioSource != null && headHitSound != null)
+                {
+                    audioSource.PlayOneShot(headHitSound);
+                }
+
                 // ★ 안전장치 추가 및 재생 강제화
                 if (headHitPrefab != null)
                 {
@@ -92,7 +121,7 @@ public class ClickDamageTest : MonoBehaviour
                     Debug.LogError("[파티클 에러] headHitPrefab이 인스펙터에 연결되지 않았습니다! 확인해보세요.");
                 }
 
-                // 🔴 [변경] 고정 수치(0.15f, 0.2f) 대신 인스펙터에서 유저님이 조절하는 슬라이더 변수값으로 연동 완료!
+                // [변경] 고정 수치(0.15f, 0.2f) 대신 인스펙터에서 유저님이 조절하는 슬라이더 변수값으로 연동 완료!
                 if (CameraShake.Instance != null)
                 {
                     CameraShake.Instance.Shake(shakeDuration, shakeMagnitude);
@@ -107,6 +136,12 @@ public class ClickDamageTest : MonoBehaviour
             else if (hit.collider.CompareTag("Enemy"))
             {
                 Debug.Log("<color=orange>몸 샷</color>");
+
+                // 🔴 [추가] 몸샷 사운드 재생
+                if (audioSource != null && bodyHitSound != null)
+                {
+                    audioSource.PlayOneShot(bodyHitSound);
+                }
 
                 // ★ [이펙트 소환] 몸통 피격 이펙트 생성
                 if (bodyHitPrefab != null)
