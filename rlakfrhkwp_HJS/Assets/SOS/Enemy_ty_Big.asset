@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b060ba84a0c60f544ba6b09cf426094e, type: 3}
-  m_Name: EscapeConfig
-  m_EditorClassIdentifier: Assembly-CSharp::EscapeConfig
-  escapeDuration: 15
+  m_Script: {fileID: 11500000, guid: 6db58cad9fc7c5c47b78e9ebb0480741, type: 3}
+  m_Name: Enemy_ty_Big
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  maxHp: 3
+  moveSpeed: 0.15
+  separationRadius: 0.2
+  separationForce: 2

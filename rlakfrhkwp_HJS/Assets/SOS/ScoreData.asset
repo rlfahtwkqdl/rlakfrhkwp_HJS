@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82e8c51cb428adb4e9ac2cfe45a288af, type: 3}
   m_Name: ScoreData
   m_EditorClassIdentifier: Assembly-CSharp::ScoreData
-  regularKillScore: 10
-  headshotKillScore: 25
+  regularKillScore: 100
+  headshotKillScore: 250
   scorePerInterval: 1
   survivalInterval: 0.1

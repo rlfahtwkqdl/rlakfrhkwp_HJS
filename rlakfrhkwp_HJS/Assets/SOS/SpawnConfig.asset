@@ -20,7 +20,9 @@ MonoBehaviour:
     spawnInterval: 2
     enemyPool:
     - enemyPrefab: {fileID: 3777284608353971171, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
-      weight: 5
+      weight: 3
+    - enemyPrefab: {fileID: 421680267411628562, guid: 8b2b3ac5d62eb654fa6777b2206c1e32, type: 3}
+      weight: 7
     moneySpawnInterval: 3
     moneyPool:
     - moneyPrefab: {fileID: 7251844634844483668, guid: 23d588f35f6092b428c8bebe6c5106a0, type: 3}
