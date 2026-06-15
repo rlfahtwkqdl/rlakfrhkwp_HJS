@@ -24,7 +24,6 @@ public class EscapeSystem : MonoBehaviour
         {
             escapeButton.onClick.AddListener(StartEscapeProcess);
         }
-        // 게임 시작 시에는 텍스트를 숨기지 않고, 인스펙터에 써둔 그대로(예: "탈출") 둡니다.
     }
 
     public void StartEscapeProcess()
@@ -40,10 +39,18 @@ public class EscapeSystem : MonoBehaviour
         if (escapeButton != null)
             escapeButton.interactable = false; // 버튼 중복 클릭 방지 비활성화
 
-        // SO에서 설정한 대기 시간을 가져옴
+        // 1. 기본 대기 시간을 SO(ScriptableObject)에서 우선 가져옵니다.
         float remainingTime = config.escapeDuration;
 
-        // [핵심] 버튼 누른 '즉시' 첫 프레임 타이머 표시
+        // =============================================================
+        // ★ [상점 연동 추가] UpgradeManager가 존재하면 업그레이드로 깎인 최종 시간을 계산해옵니다.
+        if (UpgradeManager.Instance != null)
+        {
+            remainingTime = UpgradeManager.Instance.GetUpgradedEscapeTime(config.escapeDuration);
+        }
+        // =============================================================
+
+        // 버튼 누른 '즉시' 첫 프레임 타이머 표시
         if (statusText != null)
         {
             statusText.text = $"{remainingTime:F1}초";
@@ -59,19 +66,31 @@ public class EscapeSystem : MonoBehaviour
 
             if (statusText != null)
             {
-                // :F1 구문이 소수점 아래 첫째 자리까지 세팅해 줍니다 (예: 4.9, 3.0)
                 statusText.text = $"{remainingTime:F1}초";
             }
 
-            if (ScoreManager.Instance != null)
-            {
-                ScoreManager.Instance.RecordSuccessScore();
-            }
+            // 🚨 [기존 버그 수정] RecordSuccessScore()는 매 프레임 호출하면 안 되므로 
+            // while 루프 밖(타이머가 완전히 끝난 시점)으로 이동시켰습니다.
 
             yield return null;
         }
 
-       
+        // =============================================================
+        // 타이머가 완전히 끝난 뒤 처리 (탈출 성공!)
+        if (statusText != null)
+        {
+            statusText.text = "튀는 중";
+        }
+
+        // ★ [이동 및 복구] 매 프레임 돌던 함수를 일로 옮겨서 딱 1번만 깔끔하게 저장하게 만들었습니다.
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.RecordSuccessScore();
+        }
+
+        // "탈출 성공!" 이라는 문구를 플레이어가 눈으로 읽을 수 있게 0.5초만 대기 후 씬 전환
+        yield return new WaitForSeconds(0.5f);
+        // =============================================================
 
         SceneManager.LoadScene(successSceneName);
     }
