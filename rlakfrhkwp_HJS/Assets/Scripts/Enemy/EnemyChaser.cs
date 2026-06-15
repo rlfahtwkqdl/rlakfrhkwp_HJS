@@ -6,11 +6,11 @@ public class EnemyChaser : MonoBehaviour
     [SerializeField] private EnemyData enemyData; // 이제 모든 데이터는 여기서 가져옵니다.
 
     private Transform playerTransform;
-    private float baseScaleX; // 🔴 [새로 추가] 적의 원래 오리지널 X 크기를 기억할 변수
+    private float baseScaleX; // 적의 원래 오리지널 X 크기를 기억할 변수
 
     void Start()
     {
-        // 🔴 [새로 추가] 시작하자마자 인스펙터에 설정된 이 오브젝트의 X축 크기를 기억합니다.
+        // 시작하자마자 인스펙터에 설정된 이 오브젝트의 X축 크기를 기억합니다.
         baseScaleX = transform.localScale.x;
 
         GameObject player = GameObject.FindWithTag("Player");
@@ -37,7 +37,7 @@ public class EnemyChaser : MonoBehaviour
         float speed = enemyData.MoveSpeed;
         float force = enemyData.SeparationForce; // SO에서 분산 힘 가져오기
 
-        // 1. 플레이어를 향하는 기본 방향 계산
+        // 1. 플레이어를 향하는 기본 방향 계산 (★ 이 값을 좌우반전에 사용합니다)
         Vector2 directionToPlayer = ((Vector2)playerTransform.position - (Vector2)transform.position).normalized;
 
         // 2. 주변 적들과 겹치지 않으려는 밀어내는 힘(분산력) 계산
@@ -49,15 +49,15 @@ public class EnemyChaser : MonoBehaviour
         // 4. 최종 방향으로 이동
         transform.position += (Vector3)finalDirection * speed * Time.deltaTime;
 
-        // 🔴 [새로 추가] 최종 이동 방향(X축)을 확인해서 뿅 하고 좌우반전 시키기
-        if (finalDirection.x > 0.01f)
+        // 🔴 [변경] 최종 이동 방향(finalDirection)이 아닌, 실제 플레이어 위치(directionToPlayer)를 기준으로 좌우반전!
+        if (directionToPlayer.x > 0.01f)
         {
-            // 최종 방향이 오른쪽이면 원래 크기(양수) 유지
+            // 플레이어가 내 기준 오른쪽에 있으면 원래 크기(양수) 유지
             transform.localScale = new Vector3(Mathf.Abs(baseScaleX), transform.localScale.y, transform.localScale.z);
         }
-        else if (finalDirection.x < -0.01f)
+        else if (directionToPlayer.x < -0.01f)
         {
-            // 최종 방향이 왼쪽이면 X축 크기를 마이너스로 뒤집음
+            // 플레이어가 내 기준 왼쪽에 있으면 X축 크기를 마이너스로 뒤집음
             transform.localScale = new Vector3(-Mathf.Abs(baseScaleX), transform.localScale.y, transform.localScale.z);
         }
     }
