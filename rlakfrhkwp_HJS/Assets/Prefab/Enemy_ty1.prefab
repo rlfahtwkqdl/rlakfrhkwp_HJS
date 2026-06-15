@@ -141,6 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyData: {fileID: 11400000, guid: 71987f5b8c0fc3e4182720474888609a, type: 2}
   gameOverSceneName: Gameover
+  fadeDuration: 0.5
 --- !u!114 &1372892759461362945
 MonoBehaviour:
   m_ObjectHideFlags: 0

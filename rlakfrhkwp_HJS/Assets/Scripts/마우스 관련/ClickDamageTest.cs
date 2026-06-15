@@ -20,6 +20,13 @@ public class ClickDamageTest : MonoBehaviour
     [Tooltip("Head 태그를 맞췄을 때 (빨간 작은 입자로 펑 터지는 이펙트)")]
     [SerializeField] private ParticleSystem headHitPrefab;
 
+    [Header("헤드샷 카메라 진동 설정")]
+    [Range(0f, 1f)] // 인스펙터에서 슬라이더로 조절할 수 있게 만듭니다.
+    [SerializeField] private float shakeDuration = 0.15f; // 진동 시간 (초)
+
+    [Range(0f, 2f)] // 너무 세면 화면이 뒤집히니 최대 2 정도로 제한
+    [SerializeField] private float shakeMagnitude = 0.2f; // 진동 세기
+
     private bool isReloading = false;
 
     void Update()
@@ -56,6 +63,7 @@ public class ClickDamageTest : MonoBehaviour
         {
             // ★ [추가] 실제 총알이 부딪힌 정확한 2D 좌표 구하기
             Vector3 hitPoint = new Vector3(hit.point.x, hit.point.y, -1f);
+
             // 1. 오인 사격 처리
             if (hit.collider.CompareTag("Player"))
             {
@@ -65,7 +73,6 @@ public class ClickDamageTest : MonoBehaviour
                 return;
             }
 
-            // 2. 머리 맞췄을 때 (Head)
             // 2. 머리 맞췄을 때 (Head)
             else if (hit.collider.CompareTag("Head"))
             {
@@ -83,6 +90,12 @@ public class ClickDamageTest : MonoBehaviour
                 {
                     // 만약 인스펙터 연결이 풀렸다면 콘솔창에 이게 뜹니다.
                     Debug.LogError("[파티클 에러] headHitPrefab이 인스펙터에 연결되지 않았습니다! 확인해보세요.");
+                }
+
+                // 🔴 [변경] 고정 수치(0.15f, 0.2f) 대신 인스펙터에서 유저님이 조절하는 슬라이더 변수값으로 연동 완료!
+                if (CameraShake.Instance != null)
+                {
+                    CameraShake.Instance.Shake(shakeDuration, shakeMagnitude);
                 }
 
                 Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
@@ -140,6 +153,4 @@ public class ClickDamageTest : MonoBehaviour
         yield return new WaitForSeconds(gunData.ReloadTime);
         isReloading = false;
     }
-
-
 }
