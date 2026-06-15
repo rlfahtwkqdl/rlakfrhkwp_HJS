@@ -17,12 +17,14 @@ MonoBehaviour:
   phases:
   - phaseName: 1
     duration: 100
-    spawnInterval: 2
+    spawnInterval: 1
     enemyPool:
     - enemyPrefab: {fileID: 3777284608353971171, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
-      weight: 3
+      weight: 2
     - enemyPrefab: {fileID: 421680267411628562, guid: 8b2b3ac5d62eb654fa6777b2206c1e32, type: 3}
-      weight: 7
+      weight: 4
+    - enemyPrefab: {fileID: 5463844568682008843, guid: be5d12ae08eed6f40963408dc0db019f, type: 3}
+      weight: 4
     moneySpawnInterval: 3
     moneyPool:
     - moneyPrefab: {fileID: 7251844634844483668, guid: 23d588f35f6092b428c8bebe6c5106a0, type: 3}

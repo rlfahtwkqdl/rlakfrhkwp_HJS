@@ -6,9 +6,13 @@ public class EnemyChaser : MonoBehaviour
     [SerializeField] private EnemyData enemyData; // 이제 모든 데이터는 여기서 가져옵니다.
 
     private Transform playerTransform;
+    private float baseScaleX; // 🔴 [새로 추가] 적의 원래 오리지널 X 크기를 기억할 변수
 
     void Start()
     {
+        // 🔴 [새로 추가] 시작하자마자 인스펙터에 설정된 이 오브젝트의 X축 크기를 기억합니다.
+        baseScaleX = transform.localScale.x;
+
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
         {
@@ -44,6 +48,18 @@ public class EnemyChaser : MonoBehaviour
 
         // 4. 최종 방향으로 이동
         transform.position += (Vector3)finalDirection * speed * Time.deltaTime;
+
+        // 🔴 [새로 추가] 최종 이동 방향(X축)을 확인해서 뿅 하고 좌우반전 시키기
+        if (finalDirection.x > 0.01f)
+        {
+            // 최종 방향이 오른쪽이면 원래 크기(양수) 유지
+            transform.localScale = new Vector3(Mathf.Abs(baseScaleX), transform.localScale.y, transform.localScale.z);
+        }
+        else if (finalDirection.x < -0.01f)
+        {
+            // 최종 방향이 왼쪽이면 X축 크기를 마이너스로 뒤집음
+            transform.localScale = new Vector3(-Mathf.Abs(baseScaleX), transform.localScale.y, transform.localScale.z);
+        }
     }
 
     Vector2 CalculateSeparation()
@@ -75,6 +91,7 @@ public class EnemyChaser : MonoBehaviour
 
         if (neighborCount > 0)
         {
+            // 평균 분산 벡터 계산
             separationVector /= neighborCount;
         }
 
@@ -84,7 +101,6 @@ public class EnemyChaser : MonoBehaviour
     // 에디터 뷰에서 감지 반경을 눈으로 확인하기 위한 기즈모
     private void OnDrawGizmosSelected()
     {
-        // 에디터에서 아직 EnemyData를 할당하지 않았을 때 발생하는 에러 방지
         if (enemyData != null)
         {
             Gizmos.color = Color.green;
