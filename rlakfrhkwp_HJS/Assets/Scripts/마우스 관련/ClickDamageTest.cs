@@ -55,8 +55,7 @@ public class ClickDamageTest : MonoBehaviour
         if (hit.collider != null)
         {
             // ★ [추가] 실제 총알이 부딪힌 정확한 2D 좌표 구하기
-            Vector3 hitPoint = new Vector3(hit.point.x, hit.point.y, 0f);
-
+            Vector3 hitPoint = new Vector3(hit.point.x, hit.point.y, -1f);
             // 1. 오인 사격 처리
             if (hit.collider.CompareTag("Player"))
             {
@@ -67,14 +66,23 @@ public class ClickDamageTest : MonoBehaviour
             }
 
             // 2. 머리 맞췄을 때 (Head)
+            // 2. 머리 맞췄을 때 (Head)
             else if (hit.collider.CompareTag("Head"))
             {
                 Debug.Log("<color=yellow><b>머리통! 장전 시간 초기화!</b></color>");
 
-                // ★ [이펙트 소환] 머리 피격 이펙트 생성
+                // ★ 안전장치 추가 및 재생 강제화
                 if (headHitPrefab != null)
                 {
-                    Instantiate(headHitPrefab, hitPoint, Quaternion.identity);
+                    ParticleSystem effectInstance = Instantiate(headHitPrefab, hitPoint, Quaternion.identity);
+                    effectInstance.Play(); // ◀ 눈 딱 감고 한 번 더 강제로 틀어버리기
+
+                    Debug.Log($"<color=green>[파티클 성공] {effectInstance.name} 오브젝트가 맵에 생성되었습니다!</color>");
+                }
+                else
+                {
+                    // 만약 인스펙터 연결이 풀렸다면 콘솔창에 이게 뜹니다.
+                    Debug.LogError("[파티클 에러] headHitPrefab이 인스펙터에 연결되지 않았습니다! 확인해보세요.");
                 }
 
                 Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
@@ -132,4 +140,6 @@ public class ClickDamageTest : MonoBehaviour
         yield return new WaitForSeconds(gunData.ReloadTime);
         isReloading = false;
     }
+
+
 }
