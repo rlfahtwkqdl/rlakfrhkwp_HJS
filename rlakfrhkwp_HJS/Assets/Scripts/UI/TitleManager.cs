@@ -21,6 +21,9 @@ public class TitleManager : MonoBehaviour
     [Header("상점 패널 연결")]
     [SerializeField] private GameObject shopPanel;
 
+    [Header("상점 패널 연결")]
+    [SerializeField] private GameObject helpPanel;
+
     void Start()
     {
         // 게임을 처음 켰을 때는 스코어 패널이 닫혀있도록 초기화
@@ -72,6 +75,16 @@ public class TitleManager : MonoBehaviour
     public void CloseShopPanel()
     {
         if (scorePanel != null) shopPanel.SetActive(false);
+    }
+
+    public void OpenHelpPanel()
+    {
+        if (scorePanel != null) helpPanel.SetActive(true);
+    }
+
+    public void CloseHelpPanel()
+    {
+        if (scorePanel != null) helpPanel.SetActive(false);
     }
 
     // ==========================================
