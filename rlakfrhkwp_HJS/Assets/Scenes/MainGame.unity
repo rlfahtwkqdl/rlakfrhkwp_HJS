@@ -1116,13 +1116,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 0.7
   spriteUp:
-  - {fileID: -8982521830522050855, guid: 35459fe5fa09e4f4eabdf01f0239c4c4, type: 3}
+  - {fileID: 2272360203678557248, guid: 5344f97a69466e84ca1bfc19b31bd819, type: 3}
+  - {fileID: 3252293391360676208, guid: 8d4d5a302830b8545bb8b3acd41009a2, type: 3}
   spriteDown:
-  - {fileID: -8982521830522050855, guid: 35459fe5fa09e4f4eabdf01f0239c4c4, type: 3}
+  - {fileID: -8171224559559800673, guid: dd79c846523aacc4ea595c2359ecab41, type: 3}
+  - {fileID: -2481926483936773744, guid: d6152e22e1d9de54d8e388bb8bafd675, type: 3}
   spriteLeft:
-  - {fileID: -8982521830522050855, guid: 35459fe5fa09e4f4eabdf01f0239c4c4, type: 3}
+  - {fileID: 7499016263329215589, guid: da72386f2bba4474086e18c803186a03, type: 3}
+  - {fileID: 7193763711829994233, guid: 760d36babcdf6594880a93b44961843d, type: 3}
   spriteRight:
-  - {fileID: -8982521830522050855, guid: 35459fe5fa09e4f4eabdf01f0239c4c4, type: 3}
+  - {fileID: -4894125770288429797, guid: a7a40f1ccbac5c3459d556ec285ea6ca, type: 3}
+  - {fileID: 4262449220904793161, guid: a9f3e2645f1614f4097469d0f258e17c, type: 3}
   frameTime: 0.15
 --- !u!212 &1069513486
 SpriteRenderer:
@@ -1173,7 +1177,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -8982521830522050855, guid: 35459fe5fa09e4f4eabdf01f0239c4c4, type: 3}
+  m_Sprite: {fileID: -8171224559559800673, guid: dd79c846523aacc4ea595c2359ecab41, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

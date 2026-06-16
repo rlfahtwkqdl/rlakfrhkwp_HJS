@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Enemt_tySpd
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   maxHp: 1
-  moveSpeed: 0.5
+  moveSpeed: 0.8
   separationRadius: 0.09
   separationForce: 1.5
