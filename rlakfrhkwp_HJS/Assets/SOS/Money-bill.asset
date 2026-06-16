@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04d2785cf45dba44aad5fb7f8c858ce5, type: 3}
-  m_Name: Money-coin
+  m_Name: Money-bill
   m_EditorClassIdentifier: Assembly-CSharp::CoinData
-  coinName: "\uC77C\uBC18 \uB3D9\uC804"
-  coinValue: 10
+  coinName: "\uC9C0\uD398"
+  coinValue: 50

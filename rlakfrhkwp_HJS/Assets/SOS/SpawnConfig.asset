@@ -16,15 +16,11 @@ MonoBehaviour:
   maxSpawnRadius: 3
   phases:
   - phaseName: 1
-    duration: 100
+    duration: 10
     spawnInterval: 1
     enemyPool:
     - enemyPrefab: {fileID: 3777284608353971171, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
-      weight: 2
-    - enemyPrefab: {fileID: 421680267411628562, guid: 8b2b3ac5d62eb654fa6777b2206c1e32, type: 3}
-      weight: 4
-    - enemyPrefab: {fileID: 5463844568682008843, guid: be5d12ae08eed6f40963408dc0db019f, type: 3}
-      weight: 4
+      weight: 1
     moneySpawnInterval: 3
     moneyPool:
     - moneyPrefab: {fileID: 7251844634844483668, guid: 23d588f35f6092b428c8bebe6c5106a0, type: 3}
@@ -33,7 +29,13 @@ MonoBehaviour:
     duration: 99
     spawnInterval: 0.5
     enemyPool:
-    - enemyPrefab: {fileID: 3777284608353971171, guid: 01f163a94ff500741b4797454a6a5c1d, type: 3}
-      weight: 1
-    moneySpawnInterval: 0
-    moneyPool: []
+    - enemyPrefab: {fileID: 421680267411628562, guid: 8b2b3ac5d62eb654fa6777b2206c1e32, type: 3}
+      weight: 2
+    - enemyPrefab: {fileID: 5463844568682008843, guid: be5d12ae08eed6f40963408dc0db019f, type: 3}
+      weight: 8
+    moneySpawnInterval: 1
+    moneyPool:
+    - moneyPrefab: {fileID: 7251844634844483668, guid: 23d588f35f6092b428c8bebe6c5106a0, type: 3}
+      weight: 4
+    - moneyPrefab: {fileID: 7609767378779194475, guid: ec8ca50e0cdf1cf4b99dc3e51a05908b, type: 3}
+      weight: 6
