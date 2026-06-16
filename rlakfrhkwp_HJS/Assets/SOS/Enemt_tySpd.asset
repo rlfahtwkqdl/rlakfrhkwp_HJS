@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6db58cad9fc7c5c47b78e9ebb0480741, type: 3}
   m_Name: Enemt_tySpd
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  maxHp: 2
+  maxHp: 1
   moveSpeed: 0.5
   separationRadius: 0.09
   separationForce: 1.5

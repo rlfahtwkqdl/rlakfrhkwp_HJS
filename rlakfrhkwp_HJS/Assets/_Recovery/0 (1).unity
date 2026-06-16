@@ -1642,7 +1642,7 @@ Transform:
   m_GameObject: {fileID: 1114043845}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.067, y: 0.038, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1883,11 +1883,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7137171954602047674, guid: f6049c39b8809d84f9fbd60d780c6cf8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.29204
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7137171954602047674, guid: f6049c39b8809d84f9fbd60d780c6cf8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.41997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7137171954602047674, guid: f6049c39b8809d84f9fbd60d780c6cf8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1924,6 +1924,14 @@ PrefabInstance:
     - target: {fileID: 7494843225046812176, guid: f6049c39b8809d84f9fbd60d780c6cf8, type: 3}
       propertyPath: m_Name
       value: Map
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110803753768701215, guid: f6049c39b8809d84f9fbd60d780c6cf8, type: 3}
+      propertyPath: chunkSize.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8110803753768701215, guid: f6049c39b8809d84f9fbd60d780c6cf8, type: 3}
+      propertyPath: chunkSize.y
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

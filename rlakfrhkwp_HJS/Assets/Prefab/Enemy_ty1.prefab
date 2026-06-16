@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5581512848767608455}
   - component: {fileID: 121966984886250676}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -77,12 +77,12 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -520249485
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.7877358, g: 0.8095854, b: 1, a: 1}
+  m_Color: {r: 0.8470589, g: 0.8196079, b: 0.8196079, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 2756599299454734940}
   - component: {fileID: 1372892759461362945}
   - component: {fileID: 8628559818162264593}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Enemy_ty1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 1427365639310547459}
   - component: {fileID: 1957736218264120635}
   - component: {fileID: 4462360447983177752}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Head
   m_TagString: Head
   m_Icon: {fileID: 0}
@@ -279,8 +279,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -520249485
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
