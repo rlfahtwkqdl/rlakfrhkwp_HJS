@@ -542,7 +542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameOverResult
   finalScoreText: {fileID: 0}
-  evaluationText: {fileID: 1790955513}
+  evaluationText: {fileID: 0}
   inGameSceneName: MainGame
   titleSceneName: Title
 --- !u!114 &717220797
@@ -1220,7 +1220,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "\uB3C8\uC744 \uB4E4\uACE0 \uD280\uC5C8\uB2E4!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}
   m_sharedMaterial: {fileID: -3307396237676536985, guid: 178b1cae1ecf5e54a9b755902e5ac1e6, type: 2}

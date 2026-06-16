@@ -5270,7 +5270,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 468708127603221675, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.27142715
+      value: 0.12048721
       objectReference: {fileID: 0}
     - target: {fileID: 3238686318359932305, guid: 9c31e4493df50fc469805549f02a85e9, type: 3}
       propertyPath: m_LocalPosition.x
