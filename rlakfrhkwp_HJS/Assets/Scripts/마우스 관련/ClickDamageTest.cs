@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI; // 🔴 [추가] UI 컴포넌트 제어를 위해 필요합니다.
 
 public class ClickDamageTest : MonoBehaviour
 {
@@ -14,40 +15,54 @@ public class ClickDamageTest : MonoBehaviour
     [SerializeField] private LineRenderer tracerEffectPrefab;
     [SerializeField] private float tracerDuration = 0.05f;
 
-    [Header("★ [추가] 적 피격 이펙트 (파티클)")]
-    [Tooltip("Enemy 태그를 맞췄을 때 (빠르게 투명해지며 사라지는 이펙트)")]
+    [Header("★ 적 피격 이펙트 (파티클)")]
+    [Tooltip("Enemy 태그를 맞췄을 때")]
     [SerializeField] private ParticleSystem bodyHitPrefab;
-    [Tooltip("Head 태그를 맞췄을 때 (빨간 작은 입자로 펑 터지는 이펙트)")]
+    [Tooltip("Head 태그를 맞췄을 때")]
     [SerializeField] private ParticleSystem headHitPrefab;
 
     [Header("헤드샷 카메라 진동 설정")]
-    [Range(0f, 1f)] // 인스펙터에서 슬라이더로 조절할 수 있게 만듭니다.
-    [SerializeField] private float shakeDuration = 0.15f; // 진동 시간 (초)
+    [Range(0f, 1f)][SerializeField] private float shakeDuration = 0.15f;
+    [Range(0f, 2f)][SerializeField] private float shakeMagnitude = 0.2f;
 
-    [Range(0f, 2f)] // 너무 세면 화면이 뒤집히니 최대 2 정도로 제한
-    [SerializeField] private float shakeMagnitude = 0.2f; // 진동 세기
+    [Header("🔴 사운드 설정 (오디오 클립)")]
+    [SerializeField] private AudioClip fireSound;
+    [SerializeField] private AudioClip bodyHitSound;
+    [SerializeField] private AudioClip headHitSound;
+    [SerializeField] private AudioClip reloadSound;
 
-    [Header("🔴 [추가] 사운드 설정 (오디오 클립)")]
-    [SerializeField] private AudioClip fireSound;       // 총 발사 소리
-    [SerializeField] private AudioClip bodyHitSound;    // 몸통 맞은 소리
-    [SerializeField] private AudioClip headHitSound;    // 헤드샷 소리
+    [Header("🔴 [신규 추가] 장전 UI 설정")]
+    [Tooltip("마우스를 따라다닐 UI의 최상위 부모 오브젝트 (켜고 끄기용)")]
+    [SerializeField] private GameObject reloadUiParent;
+    [Tooltip("실제로 줄어들게 만들 UI 이미지 (Image Type이 Filled여야 합니다)")]
+    [SerializeField] private Image reloadGaugeImage;
+    [Tooltip("마우스 커서와 게이지 사이의 간격 조정 (Y값을 음수로 주면 커서 아래에 배치됨)")]
+    [SerializeField] private Vector2 uiOffset = new Vector2(0f, -40f);
 
-    private AudioSource audioSource; // 소리를 재생할 컴포넌트 변수
+    private AudioSource audioSource;
     private bool isReloading = false;
 
-    // 🔴 [추가] 시작할 때 AudioSource 컴포넌트를 세팅합니다.
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        // 만약 오브젝트에 AudioSource가 없다면 자동으로 추가해 줍니다.
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
+        // 시작할 때는 장전 중이 아니므로 UI를 꺼둡니다.
+        if (reloadUiParent != null) reloadUiParent.SetActive(false);
     }
 
     void Update()
     {
+        // 🔴 [추가] 장전 중일 때 UI가 마우스 커서 위치를 강제로 따라다니게 만듭니다.
+        if (isReloading && reloadUiParent != null && Mouse.current != null)
+        {
+            Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+            reloadUiParent.transform.position = mouseScreenPos + uiOffset;
+        }
+
         if (isReloading || gunData == null) return;
 
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
@@ -71,23 +86,18 @@ public class ClickDamageTest : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
         bool shouldReload = true;
 
-        // [라인 이펙트] 시작점과 끝점 지정
         Vector3 targetPosition = new Vector3(mousePosition.x, mousePosition.y, 0f);
         StartCoroutine(SpawnTracer(targetPosition));
 
-        // 🔴 [추가] 발사하는 순간 총소리 재생
         if (audioSource != null && fireSound != null)
         {
             audioSource.PlayOneShot(fireSound);
         }
 
-        // 충돌 결과 처리
         if (hit.collider != null)
         {
-            // ★ [추가] 실제 총알이 부딪힌 정확한 2D 좌표 구하기
             Vector3 hitPoint = new Vector3(hit.point.x, hit.point.y, -1f);
 
-            // 1. 오인 사격 처리
             if (hit.collider.CompareTag("Player"))
             {
                 Debug.Log("<color=red><b>오인사격! 작전 실패!</b></color>");
@@ -95,33 +105,21 @@ public class ClickDamageTest : MonoBehaviour
                 SceneManager.LoadScene(teamKillSceneName);
                 return;
             }
-
-            // 2. 머리 맞췄을 때 (Head)
             else if (hit.collider.CompareTag("Head"))
             {
                 Debug.Log("<color=yellow><b>머리통! 장전 시간 초기화!</b></color>");
 
-                // 🔴 [추가] 헤드샷 사운드 재생
                 if (audioSource != null && headHitSound != null)
                 {
                     audioSource.PlayOneShot(headHitSound);
                 }
 
-                // ★ 안전장치 추가 및 재생 강제화
                 if (headHitPrefab != null)
                 {
                     ParticleSystem effectInstance = Instantiate(headHitPrefab, hitPoint, Quaternion.identity);
-                    effectInstance.Play(); // ◀ 눈 딱 감고 한 번 더 강제로 틀어버리기
-
-                    Debug.Log($"<color=green>[파티클 성공] {effectInstance.name} 오브젝트가 맵에 생성되었습니다!</color>");
-                }
-                else
-                {
-                    // 만약 인스펙터 연결이 풀렸다면 콘솔창에 이게 뜹니다.
-                    Debug.LogError("[파티클 에러] headHitPrefab이 인스펙터에 연결되지 않았습니다! 확인해보세요.");
+                    effectInstance.Play();
                 }
 
-                // [변경] 고정 수치(0.15f, 0.2f) 대신 인스펙터에서 유저님이 조절하는 슬라이더 변수값으로 연동 완료!
                 if (CameraShake.Instance != null)
                 {
                     CameraShake.Instance.Shake(shakeDuration, shakeMagnitude);
@@ -131,19 +129,15 @@ public class ClickDamageTest : MonoBehaviour
                 if (enemy != null) enemy.InstantKill();
                 shouldReload = false;
             }
-
-            // 3. 몸통 맞췄을 때 (Enemy)
             else if (hit.collider.CompareTag("Enemy"))
             {
                 Debug.Log("<color=orange>몸 샷</color>");
 
-                // 🔴 [추가] 몸샷 사운드 재생
                 if (audioSource != null && bodyHitSound != null)
                 {
                     audioSource.PlayOneShot(bodyHitSound);
                 }
 
-                // ★ [이펙트 소환] 몸통 피격 이펙트 생성
                 if (bodyHitPrefab != null)
                 {
                     Instantiate(bodyHitPrefab, hitPoint, Quaternion.identity);
@@ -185,7 +179,36 @@ public class ClickDamageTest : MonoBehaviour
     IEnumerator ReloadRoutine()
     {
         isReloading = true;
-        yield return new WaitForSeconds(gunData.ReloadTime);
+
+        // 장전 시작 시 UI 켜고 가로 크기 만땅(1)으로 세팅
+        if (reloadUiParent != null) reloadUiParent.SetActive(true);
+        if (reloadGaugeImage != null) reloadGaugeImage.transform.localScale = Vector3.one;
+
+        float elapsed = 0f;
+        float duration = gunData.ReloadTime;
+
+        // 실시간으로 시간이 흐르면서 가로 크기(Scale X)를 줄여나갑니다.
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            if (reloadGaugeImage != null)
+            {
+                float progress = Mathf.Clamp01(1f - (elapsed / duration));
+
+                // 🔴 [핵심] Pivot이 중앙(0.5)이기 때문에 X축 Scale을 줄이면 양 옆에서 좁혀집니다!
+                reloadGaugeImage.transform.localScale = new Vector3(progress, 1f, 1f);
+            }
+            yield return null;
+        }
+
+        // 장전 완료되면 UI 숨기기
+        if (reloadUiParent != null) reloadUiParent.SetActive(false);
+
+        if (audioSource != null && reloadSound != null)
+        {
+            audioSource.PlayOneShot(reloadSound);
+        }
+
         isReloading = false;
     }
 }
