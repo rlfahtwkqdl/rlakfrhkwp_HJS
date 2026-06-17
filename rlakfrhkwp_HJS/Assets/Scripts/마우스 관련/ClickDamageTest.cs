@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI; // 🔴 [추가] UI 컴포넌트 제어를 위해 필요합니다.
+using UnityEngine.UI;
+using UnityEngine.EventSystems; // 🔴 [추가] UI 위에 마우스가 있는지 감지하기 위해 필요합니다.
 
 public class ClickDamageTest : MonoBehaviour
 {
@@ -31,12 +32,12 @@ public class ClickDamageTest : MonoBehaviour
     [SerializeField] private AudioClip headHitSound;
     [SerializeField] private AudioClip reloadSound;
 
-    [Header("🔴 [신규 추가] 장전 UI 설정")]
+    [Header("🔴 장전 UI 설정")]
     [Tooltip("마우스를 따라다닐 UI의 최상위 부모 오브젝트 (켜고 끄기용)")]
     [SerializeField] private GameObject reloadUiParent;
-    [Tooltip("실제로 줄어들게 만들 UI 이미지 (Image Type이 Filled여야 합니다)")]
+    [Tooltip("실제로 줄어들게 만들 UI 이미지")]
     [SerializeField] private Image reloadGaugeImage;
-    [Tooltip("마우스 커서와 게이지 사이의 간격 조정 (Y값을 음수로 주면 커서 아래에 배치됨)")]
+    [Tooltip("마우스 커서와 게이지 사이의 간격 조정")]
     [SerializeField] private Vector2 uiOffset = new Vector2(0f, -40f);
 
     private AudioSource audioSource;
@@ -50,13 +51,11 @@ public class ClickDamageTest : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        // 시작할 때는 장전 중이 아니므로 UI를 꺼둡니다.
         if (reloadUiParent != null) reloadUiParent.SetActive(false);
     }
 
     void Update()
     {
-        // 🔴 [추가] 장전 중일 때 UI가 마우스 커서 위치를 강제로 따라다니게 만듭니다.
         if (isReloading && reloadUiParent != null && Mouse.current != null)
         {
             Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
@@ -67,6 +66,12 @@ public class ClickDamageTest : MonoBehaviour
 
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
+            // 🔴 [★새로 추가] 현재 마우스가 UI 요소(버튼, 이미지 등) 위에 있다면 발사하지 않고 취소!
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+
             CastRayFromMouse();
         }
     }
@@ -180,28 +185,23 @@ public class ClickDamageTest : MonoBehaviour
     {
         isReloading = true;
 
-        // 장전 시작 시 UI 켜고 가로 크기 만땅(1)으로 세팅
         if (reloadUiParent != null) reloadUiParent.SetActive(true);
         if (reloadGaugeImage != null) reloadGaugeImage.transform.localScale = Vector3.one;
 
         float elapsed = 0f;
         float duration = gunData.ReloadTime;
 
-        // 실시간으로 시간이 흐르면서 가로 크기(Scale X)를 줄여나갑니다.
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             if (reloadGaugeImage != null)
             {
                 float progress = Mathf.Clamp01(1f - (elapsed / duration));
-
-                // 🔴 [핵심] Pivot이 중앙(0.5)이기 때문에 X축 Scale을 줄이면 양 옆에서 좁혀집니다!
                 reloadGaugeImage.transform.localScale = new Vector3(progress, 1f, 1f);
             }
             yield return null;
         }
 
-        // 장전 완료되면 UI 숨기기
         if (reloadUiParent != null) reloadUiParent.SetActive(false);
 
         if (audioSource != null && reloadSound != null)
