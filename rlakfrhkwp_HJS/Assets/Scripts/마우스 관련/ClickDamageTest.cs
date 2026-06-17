@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.EventSystems; // 🔴 [추가] UI 위에 마우스가 있는지 감지하기 위해 필요합니다.
+using UnityEngine.EventSystems;
 
 public class ClickDamageTest : MonoBehaviour
 {
@@ -66,7 +66,6 @@ public class ClickDamageTest : MonoBehaviour
 
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // 🔴 [★새로 추가] 현재 마우스가 UI 요소(버튼, 이미지 등) 위에 있다면 발사하지 않고 취소!
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             {
                 return;
@@ -190,6 +189,12 @@ public class ClickDamageTest : MonoBehaviour
 
         float elapsed = 0f;
         float duration = gunData.ReloadTime;
+
+        // 🔴 [핵심 수정] 업그레이드 매니저가 있다면 강화가 반영된 최종 장전 시간을 계산해 옵니다.
+        if (UpgradeManager.Instance != null)
+        {
+            duration = UpgradeManager.Instance.GetUpgradedReloadTime(duration);
+        }
 
         while (elapsed < duration)
         {
