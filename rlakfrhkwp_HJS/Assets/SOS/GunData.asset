@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9055df11de99c1b4ba7e99f4b51e33da, type: 3}
   m_Name: GunData
   m_EditorClassIdentifier: Assembly-CSharp::GunData
-  reloadTime: 2
+  reloadTime: 3
