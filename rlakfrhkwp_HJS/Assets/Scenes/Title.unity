@@ -2175,7 +2175,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &771354863
@@ -2965,6 +2965,7 @@ GameObject:
   - component: {fileID: 974936023}
   - component: {fileID: 974936022}
   - component: {fileID: 974936021}
+  - component: {fileID: 974936024}
   m_Layer: 5
   m_Name: ScorePanel
   m_TagString: Untagged
@@ -3057,6 +3058,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 974936019}
   m_CullTransparentMesh: 1
+--- !u!114 &974936024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974936019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7a1aec2e2276ef4d8c2422eba46e0af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
+  scoreData: {fileID: 11400000, guid: 4f78a0c8f35a8b343843e2e156b60cc5, type: 2}
 --- !u!1 &1033922588
 GameObject:
   m_ObjectHideFlags: 0

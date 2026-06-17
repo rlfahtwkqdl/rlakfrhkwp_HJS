@@ -31,6 +31,9 @@ public class ScoreManager : MonoBehaviour
     private List<int> recentScores = new List<int>();
     private bool hasPlayedBefore = false;
 
+    // 🔴 [버그 수정용] 현재 인게임 플레이 중인지 판별하는 플래그
+    private bool isGameplayActive = false;
+
     public int CurrentScore => currentScore;
     public int HighScore => highScore;
     public int LowestScore => lowestScore;
@@ -45,7 +48,6 @@ public class ScoreManager : MonoBehaviour
         }
         else
         {
-            // 중복된 매니저가 파괴될 때는 단순 return하여 기존 Instance를 절대 건드리지 않음
             Destroy(gameObject);
             return;
         }
@@ -64,7 +66,6 @@ public class ScoreManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // ★ 안전장치: 진짜 싱글톤 오브젝트가 완전히 파괴될 때만 주소를 비워줍니다.
     private void OnDestroy()
     {
         if (Instance == this)
@@ -75,10 +76,14 @@ public class ScoreManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // 인게임 씬 이름 대소문자 확인 필수
         if (scene.name == "MainGame")
         {
             ResetScoreForNewGame();
+            isGameplayActive = true; // 🔴 인게임 진입 시 타이머 작동 활성화
+        }
+        else
+        {
+            isGameplayActive = false; // 🔴 타이틀이나 엔딩 씬에서는 타이머 작동 차단
         }
     }
 
@@ -87,7 +92,6 @@ public class ScoreManager : MonoBehaviour
         currentScore = 0;
         survivalTimer = 0f;
 
-        // 새로 태어날 UI들을 위해 이벤트를 한 번 쏴줌
         OnScoreChanged?.Invoke(currentScore);
         Debug.Log("[ScoreManager] 점수 및 타이머 완전히 초기화됨.");
     }
@@ -99,7 +103,8 @@ public class ScoreManager : MonoBehaviour
 
     void Update()
     {
-        if (scoreData == null) return;
+        // 🔴 [버그 수정] scoreData가 없거나, 인게임('MainGame')이 아니면 생존 타이머를 안 굴립니다.
+        if (!isGameplayActive || scoreData == null) return;
 
         survivalTimer += Time.deltaTime;
         if (survivalTimer >= scoreData.SurvivalInterval)
@@ -185,10 +190,9 @@ public class ScoreManager : MonoBehaviour
 
     public void CalculateFinalScore()
     {
-        if (MoneyManager.Instance == null) return;
-
+        // 🔴 [버그 수정] MoneyManager가 혹시나 없을 때 에러가 나거나 세이브를 건너뛰는 현상 방지
         int score = currentScore;
-        int sessionMoney = MoneyManager.Instance.CurrentMoney;
+        int sessionMoney = (MoneyManager.Instance != null) ? MoneyManager.Instance.CurrentMoney : 0;
 
         FinalCalculatedScore = (score + sessionMoney) * -1;
         UpdateScoreHistory(FinalCalculatedScore);
@@ -199,18 +203,14 @@ public class ScoreManager : MonoBehaviour
         SaveGameData();
     }
 
-    // ★ ScoreManager.cs 내부에 아래 함수를 추가하세요!
     public void RecordSuccessScore()
     {
         int score = currentScore;
         int sessionMoney = (MoneyManager.Instance != null) ? MoneyManager.Instance.CurrentMoney : 0;
 
-        // 게임 오버처럼 -1을 곱하지 않고, 온전한 '양수 합산 점수'로 최종 점수 세팅!
         int finalSuccessScore = score + sessionMoney;
 
-        // 최근 기록 리스트(recentScores)에 넣고 JSON 파일로 저장까지 완료!
         UpdateScoreHistory(finalSuccessScore);
-
         Debug.Log($"[ScoreManager] 탈출 성공 기록 완료! 최종 양수 점수: {finalSuccessScore} PTS");
     }
 }
